@@ -7,6 +7,6 @@ namespace cft.Application.FlowStep
 {
     public interface IFlowStep
     {
-        Task Run(FileContext context);
+        Task RunAsync(FileContext context);
     }
 }

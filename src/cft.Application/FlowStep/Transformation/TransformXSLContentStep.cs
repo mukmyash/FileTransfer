@@ -29,7 +29,7 @@ namespace cft.Application.FlowStep.Transformation
             _xsltPath = options.XSLTPath;
         }
 
-        public async Task Run(FileContext context)
+        public Task RunAsync(FileContext context)
         {
             var transform = new XslCompiledTransform();
             try
@@ -63,6 +63,7 @@ namespace cft.Application.FlowStep.Transformation
                     tmpFile.Delete();
             }
 
+            return Task.CompletedTask;
         }
     }
 }

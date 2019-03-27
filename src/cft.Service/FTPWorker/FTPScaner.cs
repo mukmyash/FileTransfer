@@ -39,7 +39,7 @@ namespace cft.Service.FTPWorker
                     // Помечаем файл взятым в работу (если вдруг работает много инстансов)
                     await client.RenameAsync(item.FullName, item.FullName + "_CFT_WORK");
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // Файл может быть взят другим в работу.
                     continue;
@@ -56,7 +56,7 @@ namespace cft.Service.FTPWorker
 
                     await client.DeleteFileAsync(item.FullName + "_CFT_WORK");
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // Если что-то пошло не так то переименовываем обратно
                     if (await client.FileExistsAsync(item.FullName + "_CFT_WORK"))

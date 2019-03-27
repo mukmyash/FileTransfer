@@ -19,7 +19,7 @@ namespace cft.Application.Tests.FlowStep.Transformation
         [InlineData("   ")]
         public void CreateFlowStep_Mask_NotSet(string mask)
         {
-            Action callConstructor = () => new TransformFileNameStep(new TransformFileNameStepOptions(mask));
+            Action callConstructor = () => new TransformFileNameStep(new TransformFileNameStepOptions() { FileMask = mask });
             callConstructor.Should().Throw<CFTConfigurationException>()
                 .Which.InnerException.Should().BeOfType<CFTConfigurationException>();
         }
@@ -31,7 +31,7 @@ namespace cft.Application.Tests.FlowStep.Transformation
         public async Task CreateFlowStep_Success(string mainFileName, string mask, string expectedFileName)
         {
             const string content = "<root><data>DDD</data></root>";
-            var step = new TransformFileNameStep(new TransformFileNameStepOptions(mask));
+            var step = new TransformFileNameStep(new TransformFileNameStepOptions() { FileMask = mask });
 
             string folder = Path.Combine(".", "change-name", "CreateFlowStep_Success");
             string mainFilePath = Path.Combine(folder, mainFileName);
@@ -50,7 +50,7 @@ namespace cft.Application.Tests.FlowStep.Transformation
                 }
 
                 var context = new FileContext(mainFileInfo);
-                await step.Run(context);
+                await step.RunAsync(context);
 
 
                 File.Exists(expectedFilePath)

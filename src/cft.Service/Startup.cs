@@ -36,7 +36,6 @@ namespace cft.Service
                 return client;
             });
 
-            services.AddScoped<IFTPClientFactory, FTPClientFactory>();
             services.AddHostedService<FTPListenerHostedService>();
             services.Configure<FTPOptions>(option => context.Configuration.GetSection("FTPHostedService").Bind(option));
             services.RegisterFlowBuilder();

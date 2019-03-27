@@ -25,7 +25,7 @@ namespace cft.Application.FlowStep.Validation
             _pathStore = options.PathStore;
         }
 
-        public Task Run(FileContext context)
+        public Task RunAsync(FileContext context)
         {
             var storedFileName = Path.Combine(_pathStore, context.FileInfo.Name);
 

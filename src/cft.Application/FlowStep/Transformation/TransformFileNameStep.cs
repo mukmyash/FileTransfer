@@ -27,7 +27,7 @@ namespace cft.Application.FlowStep.Transformation
             _fileMask = options.FileMask;
         }
 
-        public Task Run(FileContext context)
+        public Task RunAsync(FileContext context)
         {
             var newFileName = _fileMask;
             var allParams = GetFileNameParameters(context.FileInfo);

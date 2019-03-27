@@ -24,7 +24,7 @@ namespace cft.Application
         {
             foreach (var stepFlow in _steps)
             {
-                await stepFlow.Run(context);
+                await stepFlow.RunAsync(context);
             }
         }
     }

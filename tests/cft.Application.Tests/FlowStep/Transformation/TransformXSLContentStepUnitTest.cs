@@ -27,7 +27,7 @@ namespace cft.Application.Tests.FlowStep.Transformation
         [InlineData("   ")]
         public void CreateFlowStep_XSLTPath_NotSet(string path)
         {
-            Action callConstructor = () => new TransformXSLContentStep(new TransformXSLContentStepOptions(path));
+            Action callConstructor = () => new TransformXSLContentStep(new TransformXSLContentStepOptions() { XSLTPath = path });
             callConstructor.Should().Throw<CFTConfigurationException>()
                 .Which.InnerException.Should().BeOfType<CFTConfigurationException>();
         }
@@ -35,14 +35,16 @@ namespace cft.Application.Tests.FlowStep.Transformation
         [Fact(DisplayName = "XSLT файл не существует.")]
         public void CreateFlowStep_FileNotFound()
         {
-            Action callConstructor = () => new TransformXSLContentStep(new TransformXSLContentStepOptions(Path.Combine(".", "no.xslt")));
+            Action callConstructor = () => new TransformXSLContentStep(
+                new TransformXSLContentStepOptions() { XSLTPath = Path.Combine(".", "no.xslt") });
             callConstructor.Should().Throw<CFTConfigurationException>().Which.InnerException.Should().BeOfType<CFTFileNotFoundException>();
         }
 
         [Fact(DisplayName = "Неверный формат файла XSLT.")]
         public void CreateFlowStep_FileBadFormat()
         {
-            Action callConstructor = () => new TransformXSLContentStep(new TransformXSLContentStepOptions(_xsltFixture.GetFullPath(XSLTFixture.FILENAME_BAD_EXTENSION_TXT)));
+            Action callConstructor = () => new TransformXSLContentStep(
+                new TransformXSLContentStepOptions() { XSLTPath = _xsltFixture.GetFullPath(XSLTFixture.FILENAME_BAD_EXTENSION_TXT) });
             callConstructor.Should().Throw<CFTConfigurationException>().Which.InnerException.Should().BeOfType<CFTFileBadFormatException>();
         }
 
@@ -52,7 +54,7 @@ namespace cft.Application.Tests.FlowStep.Transformation
         [InlineData(XSLTFixture.FILENAME_VALID_XSL)]
         public void CreateFlowStep_Success(string fileName)
         {
-            Action callConstructor = () => new TransformXSLContentStep(new TransformXSLContentStepOptions(_xsltFixture.GetFullPath(fileName)));
+            Action callConstructor = () => new TransformXSLContentStep(new TransformXSLContentStepOptions() { XSLTPath = _xsltFixture.GetFullPath(fileName) });
             callConstructor.Should().NotThrow();
         }
 
@@ -69,10 +71,10 @@ namespace cft.Application.Tests.FlowStep.Transformation
             {
                 File.Copy(mainDataPath, pathDataXml);
 
-                var testClass = new TransformXSLContentStep(new TransformXSLContentStepOptions(pathXsl));
+                var testClass = new TransformXSLContentStep(new TransformXSLContentStepOptions() { XSLTPath = pathXsl });
 
                 var context = new FileContext(new FileInfo(pathDataXml));
-                await testClass.Run(context);
+                await testClass.RunAsync(context);
 
                 File.ReadAllText(pathDataXml).Should().Be(XSLTFixture.CONTENT_DATA_XML_AFTER_XSLT);
             }
@@ -90,11 +92,11 @@ namespace cft.Application.Tests.FlowStep.Transformation
             var pathXsl = _xsltFixture.GetFullPath(XSLTFixture.FILENAME_NOT_VALID_XSLT);
             var pathDataXml = _xsltFixture.GetFullPath(XSLTFixture.FILENAME_DATA_XML);
 
-            var testClass = new TransformXSLContentStep(new TransformXSLContentStepOptions(pathXsl));
+            var testClass = new TransformXSLContentStep(new TransformXSLContentStepOptions() { XSLTPath = pathXsl });
 
             var context = new FileContext(new FileInfo(pathDataXml));
 
-            Action callMethode = () => testClass.Run(context).GetAwaiter().GetResult();
+            Action callMethode = () => testClass.RunAsync(context).GetAwaiter().GetResult();
 
             callMethode.Should().Throw<CFTApplicationException>();
         }
