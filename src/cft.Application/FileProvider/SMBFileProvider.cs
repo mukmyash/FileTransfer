@@ -3,19 +3,19 @@ using SharpCifs.Smb;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace cft.Application.FileProvider
 {
-    internal class SMBFileProvider : IFileProvieder
+    internal class SMBFileProvider : IFileProvider
     {
         string _login;
         string _password;
         string _serverIP;
-        string _path;
 
-        private string FullPath => $"smb://{_login}:{_password}@{_serverIP }/{_path }";
+        private string FullPath => $"smb://{_login}:{_password}@{_serverIP }";
 
         public SMBFileProvider(ISMBFileProviderOptions options)
         {
@@ -31,12 +31,11 @@ namespace cft.Application.FileProvider
             _login = options.Login;
             _password = options.Password;
             _serverIP = options.ServerIP;
-            _path = options.Path;
         }
 
-        public Task CreateFileAsync(FileInfo fileInfo)
+        public Task CreateFileAsync(FileInfo fileInfo, string path)
         {
-            var file = new SmbFile($"{ FullPath }/{fileInfo.Name}.{fileInfo.Extension}");
+            var file = new SmbFile($"{ FullPath }/{path }/{fileInfo.Name}.{fileInfo.Extension}");
 
             file.CreateNewFile();
 

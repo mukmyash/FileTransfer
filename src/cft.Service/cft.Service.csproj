@@ -16,10 +16,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\cft.Application\cft.Application.csproj" />
+    <ProjectReference Include="..\Hosting\CFT.Hosting\CFT.Hosting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Config\DevelopmentConfig.json">
+    <None Update="Config\FileScannerConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -5,9 +5,10 @@ using System.Text;
 
 namespace cft.Application.FlowStep.Manipulation
 {
-    public class IMoveStepOptions
+    public interface IMoveStepOptions : IValidateOptions
     {
-        public string FileProvider { get; set; }
-        public IConfigurationSection Settings { get; set; }
+        string FileProvider { get; }
+        string Path { get; }
+        IConfigurationSection Settings { get; }
     }
 }

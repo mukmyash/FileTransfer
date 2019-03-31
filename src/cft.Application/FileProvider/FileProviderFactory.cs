@@ -6,9 +6,9 @@ using System.Text;
 
 namespace cft.Application.FileProvider
 {
-    internal class FileProviderFactory
+    internal class FileProviderFactory : IFileProviderFactory
     {
-        public IFileProvieder GetProvider(string type, IConfigurationSection config)
+        public IFileProvider GetProvider(string type, IConfigurationSection config)
         {
             switch (type.ToLower())
             {

@@ -1,0 +1,12 @@
+{
+  "FileScannerHostedService": {
+    "FileProviderType": "SMB",
+    "WatchPath": "Elements SE/ftp/",
+    "ScanPeriodSeconds": 5,
+    "FileProviderSettings": {
+      "ServerIP": "192.168.1.1",
+      "Login": "admin",
+      "Password": "admin"
+    }
+  }
+}

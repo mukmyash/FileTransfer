@@ -1,9 +1,9 @@
 ﻿using cft.Application.Exceptions;
+using cft.Application.FileProvider;
+using cft.Application.FlowStep;
+using cft.Application.FlowStep.Manipulation;
 using cft.Application.FlowStep.Transformation;
 using cft.Application.FlowStep.Validation;
-using cft.Application.Options;
-using cft.Application.Options.FlowStep.Transformation;
-using cft.Application.Options.FlowStep.Validation;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -37,6 +37,14 @@ namespace cft.Application.Extensions
             return builder;
         }
 
+        public static IFlowBuilder RegisterManipulationMoveTo(this IFlowBuilder builder, IConfigurationSection section)
+        {
+            var options = section.Get<MoveStepOptions>();
+            var step = new MoveStep(options, new FileProviderFactory());
+            builder.RegisterStep(step);
+            return builder;
+        }
+
         public static IFlowBuilder RegisterFromConfig(this IFlowBuilder builder, IConfigurationSection section)
         {
             var options = section.Get<StepInfoOptions[]>();
@@ -45,6 +53,9 @@ namespace cft.Application.Extensions
             {
                 switch (option.Type)
                 {
+                    case "Move":
+                        builder.RegisterManipulationMoveTo(option.Settings);
+                        break;
                     case "CheckDublicate":
                         builder.RegisterValidationDublicateByFileSystem(option.Settings);
                         break;

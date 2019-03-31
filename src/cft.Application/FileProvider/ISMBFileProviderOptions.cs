@@ -1,4 +1,4 @@
-﻿using cft.Application.Options;
+﻿using cft.Application.FlowStep;
 
 namespace cft.Application.FileProvider
 {
@@ -6,7 +6,6 @@ namespace cft.Application.FileProvider
     {
         string Login { get; set; }
         string Password { get; set; }
-        string Path { get; set; }
         string ServerIP { get; set; }
     }
 }

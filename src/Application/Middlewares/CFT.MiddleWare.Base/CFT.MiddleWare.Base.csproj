@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\MiddleWare\MiddleWare.Abstractions\MiddleWare.Abstractions.csproj" />
+    <ProjectReference Include="..\..\CFT.Application.Abstractions\CFT.Application.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

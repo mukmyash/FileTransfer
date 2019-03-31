@@ -1,7 +1,4 @@
 ﻿using cft.Application;
-using cft.Service.FTPWorker;
-using cft.Service.HostedService;
-using cft.Service.Options;
 using FluentFTP;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using CFT.Hosting;
+using MiddleWare.Abstractions.Extensions;
 
 namespace cft.Service
 {
@@ -18,11 +17,12 @@ namespace cft.Service
         {
             var startup = new Startup();
 
-            await new HostBuilder()
+            await new CFTHostBuilder()
+                .ConfigureApplication(startup.Configure)
+                .ConfigureServices(startup.ConfigureService)
                 .ConfigureAppConfiguration(startup.Configure)
-                 .ConfigureServices(startup.ConfigureService)
-                 .Build()
-                 .RunAsync();
+                .Build()
+                .RunAsync();
         }
     }
 }

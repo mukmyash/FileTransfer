@@ -11,7 +11,8 @@ namespace cft.Application.FileProvider
         public string Login { get; set; }
         public string Password { get; set; }
         public string ServerIP { get; set; }
-        public string Path { get; set; }
+
+        public SMBFileProviderOptions() { }
 
         public SMBFileProviderOptions(IConfigurationSection config)
         {
@@ -23,10 +24,7 @@ namespace cft.Application.FileProvider
             if (string.IsNullOrWhiteSpace(ServerIP))
                 throw new CFTConfigurationException("Не указан IP сервера.");
 
-            if (string.IsNullOrWhiteSpace(Path))
-                throw new CFTConfigurationException("Не указан путь для сохранения файла.");
-
-            if(!string.IsNullOrWhiteSpace(Login) && string.IsNullOrWhiteSpace(Password))
+            if (!string.IsNullOrWhiteSpace(Login) && string.IsNullOrWhiteSpace(Password))
                 throw new CFTConfigurationException("Не указан пароль.");
         }
     }
