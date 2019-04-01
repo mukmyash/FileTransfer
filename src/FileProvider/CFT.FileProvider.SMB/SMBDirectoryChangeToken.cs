@@ -45,8 +45,6 @@ namespace CFT.FileProvider.SMB
 
         public bool ActiveChangeCallbacks => false;
 
-        Action<object> _callback;
-
         public IDisposable RegisterChangeCallback(Action<object> callback, object state)
         {
             return EmptyDisposable.Instance;

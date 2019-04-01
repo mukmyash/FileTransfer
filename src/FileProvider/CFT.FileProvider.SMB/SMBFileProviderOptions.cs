@@ -11,15 +11,20 @@ namespace CFT.FileProvider.SMB
         public string Password { get; set; }
         public string ServerIP { get; set; }
 
-
+        private string _fullPath;
         internal string FullPath
         {
             get
             {
-                if (string.IsNullOrEmpty(Login))
-                    return $"smb://{ServerIP }";
+                if (string.IsNullOrEmpty(_fullPath))
+                {
+                    _fullPath = string.Concat(
+                        "smb://",
+                        !string.IsNullOrWhiteSpace(Login) ? $"{Login}:{Password}@" : string.Empty,
+                        ServerIP);
+                }
 
-                return $"smb://{Login}:{Password}@{ServerIP }";
+                return _fullPath;
             }
         }
 

@@ -1,7 +1,9 @@
-﻿using CFT.MiddleWare.Base;
+﻿using CFT.Hosting.Middleware;
+using CFT.MiddleWare.Base;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MiddleWare.Abstractions.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,10 +29,12 @@ namespace CFT.Hosting
             Action<HostBuilderContext, IServiceCollection> additionConfigureDelegate = (ctx, services) =>
             {
                 configureDelegate(ctx, services);
+                services.AddLogging();
                 services.AddHostedService<FileScanerHostedService>();
                 services.AddSingleton<ICFTMiddlewareBuilder>(provider =>
                 {
                     var result = new CFTMiddlewareBuilder(provider);
+                    result.UseMiddleware<LogMiddleware, CFTFileContext>();
                     _configure?.Invoke(ctx, result);
                     return result;
                 });

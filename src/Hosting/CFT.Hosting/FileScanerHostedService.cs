@@ -89,7 +89,7 @@ namespace CFT.Hosting
 
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
 
                 }

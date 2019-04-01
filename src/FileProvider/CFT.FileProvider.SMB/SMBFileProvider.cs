@@ -20,17 +20,34 @@ namespace CFT.FileProvider.SMB
 
         public ICFTDirectoryContents GetDirectoryContents(string subpath)
         {
-            return new SMBDirectoryContents(new SmbFile($"{_options.FullPath}/{ subpath }"));
+            var smbPath = _options.FullPath;
+
+            return new SMBDirectoryContents(new SmbFile($"{smbPath}/{PathString.PrepareStringPath(subpath, smbPath, true)}"));
         }
 
         public ICFTFileInfo GetFileInfo(string subpath)
         {
-            return new SMBFileInfo(new SmbFile($"{_options.FullPath}/{ subpath }"));
+            var smbPath = _options.FullPath;
+            return new SMBFileInfo(new SmbFile($"{smbPath}/{ PathString.PrepareStringPath(subpath, smbPath, false) }"));
         }
 
         public IChangeToken Watch(string subpath)
         {
-            return new SMBDirectoryChangeToken($"{_options.FullPath}/{ subpath }");
+            var smbPath = _options.FullPath;
+            return new SMBDirectoryChangeToken($"{smbPath}/{PathString.PrepareStringPath(subpath, smbPath, true)}");
+        }
+
+        private string GetSubpath(string path)
+        {
+            if (path.StartsWith(_options.FullPath))
+                return path.Substring(0, _options.FullPath.Length);
+
+            if (path.StartsWith("smb://"))
+            {
+                var spanPath = path.AsSpan();
+            }
+
+            return path;
         }
     }
 }

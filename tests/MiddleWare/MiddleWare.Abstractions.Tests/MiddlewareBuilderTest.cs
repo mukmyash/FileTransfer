@@ -25,7 +25,7 @@ namespace MiddleWare.Abstractions.Tests
             TestContext context;
             using (var scopedProvider = provider.CreateScope())
             {
-                context = new TestContext(provider, scopedProvider.ServiceProvider);
+                context = new TestContext(scopedProvider.ServiceProvider);
                 await resultBuild(context);
             }
 
@@ -56,7 +56,7 @@ namespace MiddleWare.Abstractions.Tests
             TestContext context;
             using (var scopedProvider = provider.CreateScope())
             {
-                context = new TestContext(provider, scopedProvider.ServiceProvider);
+                context = new TestContext(scopedProvider.ServiceProvider);
                 await resultBuild(context);
             }
 

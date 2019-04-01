@@ -18,8 +18,9 @@ namespace cft.Service
             var startup = new Startup();
 
             await new CFTHostBuilder()
-                .ConfigureApplication(startup.Configure)
+                .ConfigureApplication(startup.ConfigureApplication)
                 .ConfigureServices(startup.ConfigureService)
+                .ConfigureLogging(startup.ConfigureLoging)
                 .ConfigureAppConfiguration(startup.Configure)
                 .Build()
                 .RunAsync();

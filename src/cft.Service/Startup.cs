@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using MiddleWare.Abstractions;
@@ -25,10 +26,22 @@ namespace cft.Service
 
         public void ConfigureService(HostBuilderContext context, IServiceCollection services)
         {
+            
         }
 
-        public void Configure(HostBuilderContext context, ICFTMiddlewareBuilder services)
+        public void ConfigureApplication(HostBuilderContext context, ICFTMiddlewareBuilder app)
         {
+            app.Run(async ctx =>
+            {
+                await Task.Delay(5*1000);
+            });
+        }
+
+        public void ConfigureLoging(HostBuilderContext context, ILoggingBuilder logging)
+        {
+            logging
+                .AddConfiguration(context.Configuration.GetSection("Logging"))
+                .AddConsole();
         }
     }
 }
