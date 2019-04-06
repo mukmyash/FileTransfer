@@ -4,12 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CFT.FileProvider.SMB
 {
     internal class SMBFileInfo : ICFTFileInfo
     {
         SmbFile _file;
+
+        public SMBFileInfo(string path)
+            : this(new SmbFile(path))
+        {
+        }
 
         public SMBFileInfo(SmbFile file)
         {
@@ -19,7 +25,7 @@ namespace CFT.FileProvider.SMB
             }
             if (!file.Exists())
             {
-                throw new ArgumentException($"Каталог '{file.GetName()}' не существует.");
+                throw new ArgumentException($"Файл '{file.GetName()}' не существует.");
             }
 
             _file = file;
@@ -39,15 +45,24 @@ namespace CFT.FileProvider.SMB
 
         public Stream CreateReadStream()
         {
-            return _file.GetInputStream();
+            var stream = _file.GetInputStream();
+            return stream;
         }
 
-        public void Rename(string newName)
+        public void Delete()
         {
-            var newFile = new SmbFile(_file, newName);
-            _file.RenameTo(newFile);
+            _file.Delete();
+            _file = null;
+        }
+
+        public async Task RenameAsync(string newName)
+        {
+            var newFile = new SmbFile(_file.GetParent());
+            await _file.RenameToAsync(newFile);
+
             if (_file.Exists())
                 throw new Exception("Файл не переименован.");
+
             if (!newFile.Exists())
                 throw new Exception("Файл не переименован.");
 

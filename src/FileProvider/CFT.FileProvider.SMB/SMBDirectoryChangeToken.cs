@@ -8,7 +8,7 @@ namespace CFT.FileProvider.SMB
 {
     internal class SMBDirectoryChangeToken : IChangeToken
     {
-        string _folderPath;
+        readonly string _folderPath;
 
         public SMBDirectoryChangeToken(string folderPath)
         {

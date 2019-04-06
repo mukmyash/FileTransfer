@@ -8,7 +8,7 @@ using System.Text;
 
 namespace CFT.Hosting
 {
-    public class FileProviderFactory : IFileProviderFactory
+    internal class FileProviderFactory : IFileProviderFactory
     {
         public ICFTFileProvider GetFileProvider(string type, IConfigurationSection settings)
         {

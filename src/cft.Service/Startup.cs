@@ -31,10 +31,6 @@ namespace cft.Service
 
         public void ConfigureApplication(HostBuilderContext context, ICFTMiddlewareBuilder app)
         {
-            app.Run(async ctx =>
-            {
-                await Task.Delay(5*1000);
-            });
         }
 
         public void ConfigureLoging(HostBuilderContext context, ILoggingBuilder logging)

@@ -11,6 +11,7 @@
     }
   },
   "FileScannerHostedService": {
+    "BackupPath": "./backup/files",
     "FileProviderType": "SMB",
     "WatchPath": "Elements SE/ftp/",
     "ScanPeriodSeconds": 5,

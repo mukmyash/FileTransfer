@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CFT.FileProvider.Abstractions
 {
@@ -12,6 +13,7 @@ namespace CFT.FileProvider.Abstractions
         DateTimeOffset LastModified { get; }
         bool IsDirectory { get; }
         Stream CreateReadStream();
-        void Rename(string v);
+        Task RenameAsync(string v);
+        void Delete();
     }
 }

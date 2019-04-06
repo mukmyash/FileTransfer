@@ -8,6 +8,8 @@ namespace CFT.Hosting
 {
     public class FileScanerOptions
     {
+        public string BackupPath { get; set; }
+        public bool UseBackup => !string.IsNullOrWhiteSpace(BackupPath);
         public string FileProviderType { get; set; }
         public string WatchPath { get; set; }
         public int ScanPeriodSeconds { get; set; }

@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace CFT.Hosting.Middleware
 {
-    internal class LogMiddleware
+    internal class LogScopeMiddleware
     {
         MiddlewareDelegate<CFTFileContext> _next;
         ILogger _logger;
 
-        public LogMiddleware(MiddlewareDelegate<CFTFileContext> next, ILogger<LogMiddleware> logger)
+        public LogScopeMiddleware(MiddlewareDelegate<CFTFileContext> next, ILogger<LogScopeMiddleware> logger)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

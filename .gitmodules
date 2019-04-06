@@ -1,0 +1,3 @@
+[submodule "submodules\\SMBClient"]
+	path = submodules\\SMBClient
+	url = https://github.com/mukmyash/SharpCifs.Std.git

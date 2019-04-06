@@ -6,8 +6,8 @@ namespace CFT.MiddleWare.Base
 {
     public interface ICFTOutputFileInfo : ICFTInputFileInfo
     {
-        byte[] FileContent { get; set; }
-        string FileName { get; set; }
-        string FullName { get; set; }
+        new byte[] FileContent { get; set; }
+        new string FileName { get; set; }
+        new string FullName { get; set; }
     }
 }

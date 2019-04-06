@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace CFT.Hosting
 {
-    public interface IFileProviderFactory
+    internal interface IFileProviderFactory
     {
         ICFTFileProvider GetFileProvider(string type, IConfigurationSection settings);
     }

@@ -1,4 +1,5 @@
 ﻿using CFT.Application.Abstractions.Exceptions;
+using CFT.FileProvider.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using MiddleWare.Abstractions;
 using System;
@@ -24,7 +25,6 @@ namespace CFT.MiddleWare.Base
         }
 
         public override IServiceProvider ContextServices { get; }
-
         public ICFTInputFileInfo InputFile { get; }
         public ICFTOutputFileInfo OutputFile { get; }
 

@@ -10,7 +10,7 @@ namespace CFT.FileProvider.SMB
 {
     internal class SMBDirectoryContents : ICFTDirectoryContents
     {
-        SmbFile _directory;
+        readonly SmbFile _directory;
 
         public SMBDirectoryContents(SmbFile directory)
         {
@@ -31,8 +31,8 @@ namespace CFT.FileProvider.SMB
         public IEnumerator<ICFTFileInfo> GetEnumerator()
         {
             return _directory
-                .ListFiles()
-                .Select(smbFile => new SMBFileInfo(smbFile))
+                .List()
+                .Select(smbFile => new SMBFileInfo($"{_directory.GetPath()}{smbFile}"))
                 .Cast<ICFTFileInfo>()
                 .GetEnumerator();
         }
@@ -40,8 +40,8 @@ namespace CFT.FileProvider.SMB
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _directory
-                .ListFiles()
-                .Select(smbFile => new SMBFileInfo(smbFile))
+                .List()
+                .Select(smbFile => new SMBFileInfo($"{_directory.GetPath()}{smbFile}"))
                 .Cast<ICFTFileInfo>()
                 .GetEnumerator();
         }

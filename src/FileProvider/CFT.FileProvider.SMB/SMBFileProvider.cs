@@ -21,7 +21,6 @@ namespace CFT.FileProvider.SMB
         public ICFTDirectoryContents GetDirectoryContents(string subpath)
         {
             var smbPath = _options.FullPath;
-
             return new SMBDirectoryContents(new SmbFile($"{smbPath}/{PathString.PrepareStringPath(subpath, smbPath, true)}"));
         }
 
