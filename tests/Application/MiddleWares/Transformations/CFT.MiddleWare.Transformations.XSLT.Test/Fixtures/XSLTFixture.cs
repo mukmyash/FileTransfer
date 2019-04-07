@@ -1,9 +1,11 @@
-﻿using System;
+﻿using CFT.MiddleWare.Base;
+using FakeItEasy;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace cft.Application.Tests.Fixtures
+namespace CFT.MiddleWare.Transformations.XSLT.Test.Fixtures
 {
     public class XSLTFixture : IDisposable
     {
@@ -29,15 +31,21 @@ namespace cft.Application.Tests.Fixtures
                 case FILENAME_VALID_XSLT:
                 case FILENAME_NOT_VALID_XSLT:
                 case FILENAME_VALID_XSL:
-                    break;
+                    return Path.Combine(PATH, fileName);
                 default:
                     throw new Exception($"Файл '{fileName}' не создавался.");
             }
-
-            return Path.Combine(PATH, fileName);
         }
 
-        readonly Dictionary<string, string> FilesWithContent = new Dictionary<string, string>
+        public ICFTInputFileInfo GetFakeFileInfo()
+        {
+            var fakeFileInfo = A.Fake<ICFTInputFileInfo>();
+            A.CallTo(() => fakeFileInfo.FileContent)
+                .Returns(Encoding.Default.GetBytes(CONTENT_DATA_XML));
+            return fakeFileInfo;
+        }
+
+        Dictionary<string, string> FilesWithContent = new Dictionary<string, string>
         {
             { FILENAME_NOT_VALID_XSLT,CONTENT_XSLT_NOT_VALID },
             { FILENAME_DATA_XML,  CONTENT_DATA_XML },

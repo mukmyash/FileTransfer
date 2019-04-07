@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CFT.MiddleWare.Transformations.XSLT
 {
-    internal class XSLTransformContentOptions
+    public class XSLTransformContentOptions
     {
         public string XSLTPath { get; set; }
 

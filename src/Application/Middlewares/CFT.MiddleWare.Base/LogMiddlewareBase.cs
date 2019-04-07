@@ -1,14 +1,13 @@
-﻿using CFT.MiddleWare.Base;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using MiddleWare.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFT.Hosting.Middleware
+namespace CFT.MiddleWare.Base
 {
-    internal abstract class LogMiddlewareBase
+    public abstract class LogMiddlewareBase
     {
         readonly MiddlewareDelegate<CFTFileContext> _next;
         readonly ILogger _logger;
@@ -43,5 +42,4 @@ namespace CFT.Hosting.Middleware
 
         protected abstract Task ExecAsync(CFTFileContext context);
     }
-
 }

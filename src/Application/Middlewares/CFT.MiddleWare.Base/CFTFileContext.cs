@@ -16,11 +16,9 @@ namespace CFT.MiddleWare.Base
         {
             if (applicationServices == null)
                 throw new ArgumentNullException(nameof(applicationServices));
-            if (inputFile == null)
-                throw new ArgumentNullException(nameof(inputFile));
 
             ContextServices = applicationServices.CreateScope().ServiceProvider;
-            InputFile = inputFile;
+            InputFile = inputFile ?? throw new ArgumentNullException(nameof(inputFile));
             OutputFile = new CFTFileInfo(inputFile);
         }
 

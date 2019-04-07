@@ -24,7 +24,7 @@ namespace cft.Application.Tests.FlowStep.Validation
         {
             var testClass = new CheckXSDStep(new CheckXSDStepOptions() { XSDPath = _xsdFixture.GetFullPath(XSDFixture.FILENAME_VALID_XSD) });
 
-            var context = new FileContext(new FileInfo(_xsdFixture.GetFullPath(XSDFixture.FILENAME_DATA_VALID_XML)));
+            var context = new FileContext(new FileInfo(_xsdFixture.GetFullPath(XSDFixture.FILENAME_DATA_NOT_VALID_XML)));
 
             await testClass.RunAsync(context);
         }

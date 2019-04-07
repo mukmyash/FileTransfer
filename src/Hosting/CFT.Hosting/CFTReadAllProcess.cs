@@ -32,7 +32,7 @@ namespace CFT.Hosting
             _fileProvider = fileProviderFactory.GetFileProvider(options.Value.FileProviderType, options.Value.FileProviderSettings);
         }
 
-        public async Task ProcessAllAsync(MiddlewareDelegate<CFTFileContext> applicationFlow)
+        public Task ProcessAllAsync(MiddlewareDelegate<CFTFileContext> applicationFlow)
         {
             foreach (var fileInfo in _fileProvider.GetDirectoryContents(_options.WatchPath))
             {
@@ -49,16 +49,16 @@ namespace CFT.Hosting
                             fileInfo.PhysicalPath));
                 }
 
-                ThreadPool.QueueUserWorkItem<CFTFileContext>(
+                ThreadPool.QueueUserWorkItem(
                     ctx =>
                     {
                         applicationFlow(ctx).GetAwaiter().GetResult();
-                        // fileInfo.Delete();
                         _semaphore.Release();
                     },
                     context,
                    false);
             }
+            return Task.CompletedTask;
         }
 
         private byte[] ReadFully(Stream input)

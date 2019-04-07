@@ -16,8 +16,8 @@ namespace CFT.MiddleWare.Base
         internal CFTFileInfo(ICFTInputFileInfo fileInfo)
         {
             FileContent = new byte[fileInfo.FileContent.Length];
-            Span<byte> fileContent = FileContent.AsSpan();
-            FileContent.CopyTo(fileContent);
+            Span<byte> fileContent = fileInfo.FileContent.AsSpan();
+            fileContent.CopyTo(FileContent);
             FileName = fileInfo.FileName;
             FullName = string.Empty;
         }
