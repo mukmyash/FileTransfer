@@ -61,7 +61,7 @@ namespace CFT.MiddleWare.Transformations.FileName
 
             // Параметры из имени файла имеют формат: @{FP1}, @{FP2}, ....
             return fileName
-                .Split("_").SelectMany(n => n.Split("-"))
+                .Split('_').SelectMany(n => n.Split('-'))
                 .ToDictionary(v => $"@{{FP{++paramNumber}}}");
 
         }
