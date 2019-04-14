@@ -16,8 +16,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\cft.Application\cft.Application.csproj" />
-  </ItemGroup>
-
 </Project>

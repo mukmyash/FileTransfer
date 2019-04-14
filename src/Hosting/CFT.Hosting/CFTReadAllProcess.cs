@@ -1,4 +1,5 @@
-﻿using CFT.FileProvider.Abstractions;
+﻿using CFT.FileProvider;
+using CFT.FileProvider.Abstractions;
 using CFT.MiddleWare.Base;
 using Microsoft.Extensions.Options;
 using MiddleWare.Abstractions;
@@ -11,10 +12,12 @@ using System.Threading.Tasks;
 
 namespace CFT.Hosting
 {
+    /// <summary>
+    /// Класс запускающий обработку всех файлов в прослушиваемом каталоге.
+    /// </summary>
     internal class CFTReadAllProcess : ICFTReadAllProcess
     {
-        readonly Semaphore _semaphore = new Semaphore(5, 5);
-
+        readonly SemaphoreSlim _semaphore;
         readonly ICFTFileProvider _fileProvider;
         readonly FileScanerOptions _options;
         readonly IServiceProvider _applicationServices;
@@ -30,35 +33,60 @@ namespace CFT.Hosting
             _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
             _applicationServices = applicationServices ?? throw new ArgumentNullException(nameof(applicationServices));
             _fileProvider = fileProviderFactory.GetFileProvider(options.Value.FileProviderType, options.Value.FileProviderSettings);
+            _semaphore = new SemaphoreSlim(_options.NumberParallelFileWork, _options.NumberParallelFileWork);
         }
 
-        public Task ProcessAllAsync(MiddlewareDelegate<CFTFileContext> applicationFlow)
+        /// <summary>
+        /// Достает из прослушиваемого каталога все файлы и запускает их в обработку.
+        /// </summary>
+        /// <param name="applicationFlow">Процесс обработки одного файла.</param>
+        /// <returns></returns>
+        public async Task ProcessAllAsync(MiddlewareDelegate<CFTFileContext> applicationFlow)
         {
             foreach (var fileInfo in _fileProvider.GetDirectoryContents(_options.WatchPath))
             {
-                _semaphore.WaitOne();
-
-                CFTFileContext context;
-                using (var stream = fileInfo.CreateReadStream())
-                {
-                    context = new CFTFileContext(
-                        _applicationServices,
-                        new CFTFileInfo(
-                            fileInfo.Name,
-                            ReadFully(stream),
-                            fileInfo.PhysicalPath));
-                }
+                await _semaphore.WaitAsync();
 
                 ThreadPool.QueueUserWorkItem(
                     ctx =>
                     {
-                        applicationFlow(ctx).GetAwaiter().GetResult();
-                        _semaphore.Release();
+                        try
+                        {
+                            applicationFlow(ctx).GetAwaiter().GetResult();
+                        }
+                        finally
+                        {
+                            _semaphore.Release();
+                        }
                     },
-                    context,
-                   false);
+                    state: CreateContext(fileInfo),
+                    preferLocal: false);
+
             }
-            return Task.CompletedTask;
+
+            await WaitAllThread();
+        }
+
+        private async Task WaitAllThread()
+        {
+            // Ждем окончания выполнения всех операций.
+            while (_semaphore.CurrentCount != _options.NumberParallelFileWork)
+            {
+                await Task.Delay(10);
+            }
+        }
+
+        private CFTFileContext CreateContext(ICFTFileInfo fileInfo)
+        {
+            using (var stream = fileInfo.CreateReadStream())
+            {
+                return new CFTFileContext(
+                    _applicationServices,
+                    new CFTFileInfo(
+                        fileInfo.Name,
+                        ReadFully(stream),
+                        fileInfo.PhysicalPath));
+            }
         }
 
         private byte[] ReadFully(Stream input)

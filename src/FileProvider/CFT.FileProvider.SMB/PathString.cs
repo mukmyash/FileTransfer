@@ -16,10 +16,10 @@ namespace CFT.FileProvider.SMB
         {
             var spanPath = path.AsSpan();
 
-            if (spanPath.StartsWith(startPath))
+            if (spanPath.StartsWith(startPath.AsSpan()))
                 return spanPath.Slice(startPath.Length + 1).ToString();
 
-            if (spanPath.StartsWith("smb://"))
+            if (spanPath.StartsWith("smb://".AsSpan()))
             {
                 var startIndex = "smb://".Length;
                 var indexFirstSlash = spanPath.Slice(startIndex).IndexOf('/') + startIndex + 1;
@@ -33,10 +33,10 @@ namespace CFT.FileProvider.SMB
         {
             var spanPath = path.AsSpan();
 
-            if (spanPath.StartsWith("/"))
+            if (spanPath.StartsWith("/".AsSpan()))
                 spanPath = spanPath.Slice(1);
 
-            if (isDirectory && !spanPath.EndsWith("/"))
+            if (isDirectory && !spanPath.EndsWith("/".AsSpan()))
                 return string.Concat(spanPath.ToString(), "/");
 
             return spanPath.ToString();

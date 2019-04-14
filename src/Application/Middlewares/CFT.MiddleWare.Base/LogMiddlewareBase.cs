@@ -37,9 +37,18 @@ namespace CFT.MiddleWare.Base
                 throw;
             }
 
-            await _next.Invoke(context);
+            try
+            {
+                await _next.Invoke(context);
+            }
+            catch (Exception e)
+            {
+                await NextExceptionExecAsync(e, context);
+                throw;
+            }
         }
 
         protected abstract Task ExecAsync(CFTFileContext context);
+        protected abstract Task NextExceptionExecAsync(Exception e, CFTFileContext context);
     }
 }

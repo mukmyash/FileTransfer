@@ -43,5 +43,13 @@ namespace CFT.Hosting.Middleware
                 throw new CFTDublicateFileException($"Файл '{filePath}' уже существует.");
             return File.WriteAllBytesAsync(filePath, context.InputFile.FileContent);
         }
+
+        protected override Task NextExceptionExecAsync(Exception e, CFTFileContext context)
+        {
+            var filePath = Path.Combine(_backupPath, context.InputFile.FileName);
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+            return Task.CompletedTask;
+        }
     }
 }

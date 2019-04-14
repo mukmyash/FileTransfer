@@ -1,9 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
+  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\..\CFT.Application.Abstractions\CFT.Application.Abstractions.csproj" />
     <ProjectReference Include="..\..\CFT.MiddleWare.Base\CFT.MiddleWare.Base.csproj" />

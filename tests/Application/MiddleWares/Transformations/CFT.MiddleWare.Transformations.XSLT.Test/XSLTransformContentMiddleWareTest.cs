@@ -12,13 +12,17 @@ using Xunit;
 
 namespace CFT.MiddleWare.Transformations.XSLT.Test
 {
-    public class XSLTransformContentMiddleWareTest : IClassFixture<XSLTFixture>
+    public class XSLTransformContentMiddleWareTest : IClassFixture<XSLTFixture>, IClassFixture<LoggerFixture>
     {
         private XSLTFixture _xsltFixture;
+        private LoggerFixture _loggerFixture;
 
-        public XSLTransformContentMiddleWareTest(XSLTFixture xsltFixture)
+        public XSLTransformContentMiddleWareTest(
+            XSLTFixture xsltFixture,
+            LoggerFixture loggerFixture)
         {
             _xsltFixture = xsltFixture;
+            _loggerFixture = loggerFixture;
         }
 
         [Theory(DisplayName = "Успешно преобразовали по XSLT.")]
@@ -27,11 +31,12 @@ namespace CFT.MiddleWare.Transformations.XSLT.Test
         public async Task InvokeAsync_Success(string xsltFileName)
         {
             var testClass = new XSLTransformContentMiddleWare(
+                next: ctx => Task.CompletedTask,
+                logger: _loggerFixture.GetMockLogger<XSLTransformContentMiddleWare>(),
                 options: new XSLTransformContentOptions()
                 {
                     XSLTPath = _xsltFixture.GetFullPath(xsltFileName)
-                },
-                next: ctx => Task.CompletedTask);
+                });
 
             var context = new CFTFileContext(
                 applicationServices: new ServiceCollection().BuildServiceProvider(),
@@ -51,11 +56,12 @@ namespace CFT.MiddleWare.Transformations.XSLT.Test
         public void CreateFlowStep_XSLTPath_NotSet(string xsltFilePath)
         {
             Action callConstructor = () => new XSLTransformContentMiddleWare(
+                next: ctx => Task.CompletedTask,
+                logger: _loggerFixture.GetMockLogger<XSLTransformContentMiddleWare>(),
                 options: new XSLTransformContentOptions()
                 {
                     XSLTPath = xsltFilePath
-                },
-                next: ctx => Task.CompletedTask);
+                });
             callConstructor.Should().Throw<CFTConfigurationException>()
                 .Which.InnerException.Should().BeOfType<CFTConfigurationException>();
         }

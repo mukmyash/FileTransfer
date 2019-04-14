@@ -1,16 +1,10 @@
 ﻿using CFT.Application.Abstractions.Exceptions;
+using CFT.FileProvider;
 using CFT.FileProvider.Abstractions;
 using CFT.MiddleWare.Base;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MiddleWare.Abstractions;
-using SharpCifs.Smb;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,7 +18,6 @@ namespace CFT.Hosting
         ICFTFileProvider _fileProvider;
         ICFTMiddlewareBuilder _cftMiddlewareBuilder;
         ICFTReadAllProcess _readAllProcess;
-
 
         public FileScanerHostedService(
             ICFTReadAllProcess readAllProcess,

@@ -15,11 +15,5 @@ namespace CFT.Hosting.Extensions
             app.UseMiddleware<BackupInputFileMiddleware, CFTFileContext>(path);
             return app;
         }
-
-        public static ICFTMiddlewareBuilder UseRemoveSourceFile(this ICFTMiddlewareBuilder app)
-        {
-            app.UseMiddleware<RemoveInputFileMiddleware, CFTFileContext>();
-            return app;
-        }
     }
 }

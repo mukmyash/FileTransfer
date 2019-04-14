@@ -22,5 +22,16 @@ namespace CFT.Application.Abstractions.Exceptions
         protected CFTFileXSDValidationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
+
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+            foreach (var error in SchemaErrors)
+            {
+                result.AppendLine(error);
+            }
+            result.AppendLine(base.ToString());
+            return result.ToString();
+        }
     }
 }

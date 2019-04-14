@@ -9,24 +9,28 @@ using Xunit;
 
 namespace CFT.MiddleWare.Validation.XSD.Test
 {
-    public class ValidateByXSDMiddleWareTest : IClassFixture<XSDFixture>
+    public class ValidateByXSDMiddleWareTest : IClassFixture<XSDFixture>, IClassFixture<LoggerFixture>
     {
         private XSDFixture _xsdFixture;
-
-        public ValidateByXSDMiddleWareTest(XSDFixture xsdFixture)
+        private LoggerFixture _loggerFixture;
+        public ValidateByXSDMiddleWareTest(
+            XSDFixture xsdFixture,
+            LoggerFixture loggerFixture)
         {
             _xsdFixture = xsdFixture;
+            _loggerFixture = loggerFixture;
         }
 
         [Fact(DisplayName = "Успешно проверили по XSD (Без ошибок).")]
         public async Task InvokeAsync_Success_NotError()
         {
             var testClass = new ValidateByXSDMiddleWare(
+                next: ctx => Task.CompletedTask,
+                logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
                 options: new ValidateByXSDOptions()
                 {
                     XSDPath = _xsdFixture.GetFullPath(XSDFixture.FILENAME_VALID_XSD)
-                },
-                next: ctx => Task.CompletedTask);
+                });
 
             var context = new CFTFileContext(
                 applicationServices: new ServiceCollection().BuildServiceProvider(),
@@ -36,15 +40,16 @@ namespace CFT.MiddleWare.Validation.XSD.Test
         }
 
         [Fact(DisplayName = "Успешно проверили по XSD (C ошибокой).")]
-        public async Task InvokeAsync_Success_WithError()
+        public void InvokeAsync_Success_WithError()
         {
             var testClass = new ValidateByXSDMiddleWare(
+                next: ctx => Task.CompletedTask,
+                logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
                 options: new ValidateByXSDOptions()
                 {
                     TargetNamespace = "http://NamespaceTest.com/CustomerTypes",
                     XSDPath = _xsdFixture.GetFullPath(XSDFixture.FILENAME_VALID_XSD)
-                },
-                next: ctx => Task.CompletedTask);
+                });
 
             var context = new CFTFileContext(
                 applicationServices: new ServiceCollection().BuildServiceProvider(),

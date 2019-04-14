@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -10,9 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Application\Middlewares\CFT.MiddleWare.Base\CFT.MiddleWare.Base.csproj" />
-    <ProjectReference Include="..\..\FileProvider\CFT.FileProvider.Abstractions\CFT.FileProvider.Abstractions.csproj" />
-    <ProjectReference Include="..\..\FileProvider\CFT.FileProvider.SMB\CFT.FileProvider.SMB.csproj" />
+    <ProjectReference Include="..\..\Application\CFT.Application\CFT.Application.csproj" />
   </ItemGroup>
 
 </Project>

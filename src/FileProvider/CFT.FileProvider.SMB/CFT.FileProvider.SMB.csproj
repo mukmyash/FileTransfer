@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <!--ItemGroup>
-    <PackageReference Include="SharpCifs.Std" Version="0.2.12" />
-  </ItemGroup>-->
+  <ItemGroup>
+    <PackageReference Include="SharpCifs.Std" Version="0.2.13" />
+  </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\submodules\SMBClient\SharpCifs.STD1.3\SharpCifs.STD1.3.csproj" />
     <ProjectReference Include="..\CFT.FileProvider.Abstractions\CFT.FileProvider.Abstractions.csproj" />
   </ItemGroup>
 

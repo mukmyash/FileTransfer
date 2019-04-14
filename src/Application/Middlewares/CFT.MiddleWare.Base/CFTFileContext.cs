@@ -1,12 +1,6 @@
-﻿using CFT.Application.Abstractions.Exceptions;
-using CFT.FileProvider.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MiddleWare.Abstractions;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
 
 namespace CFT.MiddleWare.Base
 {

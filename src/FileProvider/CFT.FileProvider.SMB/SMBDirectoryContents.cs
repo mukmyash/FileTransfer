@@ -14,14 +14,14 @@ namespace CFT.FileProvider.SMB
 
         public SMBDirectoryContents(SmbFile directory)
         {
-            if (!directory.IsDirectory())
-            {
-                throw new ArgumentException($"'{directory.GetName()}' не является каталогом.");
-            }
-            if (!directory.Exists())
-            {
-                throw new ArgumentException($"Каталог '{directory.GetName()}' не существует.");
-            }
+            //if (!directory.IsDirectory())
+            //{
+            //    throw new ArgumentException($"'{directory.GetName()}' не является каталогом.");
+            //}
+            //if (!directory.Exists())
+            //{
+            //    throw new ArgumentException($"Каталог '{directory.GetName()}' не существует.");
+            //}
 
             _directory = directory;
         }

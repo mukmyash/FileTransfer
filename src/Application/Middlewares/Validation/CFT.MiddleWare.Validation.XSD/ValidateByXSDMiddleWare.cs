@@ -1,5 +1,6 @@
 ﻿using CFT.Application.Abstractions.Exceptions;
 using CFT.MiddleWare.Base;
+using Microsoft.Extensions.Logging;
 using MiddleWare.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,16 @@ using System.Xml.Schema;
 
 namespace CFT.MiddleWare.Validation.XSD
 {
-    public class ValidateByXSDMiddleWare
+    internal class ValidateByXSDMiddleWare : LogMiddlewareBase
     {
         XmlSchemaSet _schemas;
-        MiddlewareDelegate<CFTFileContext> _next;
-
         ValidateByXSDOptions _option;
+
         public ValidateByXSDMiddleWare(
-            ValidateByXSDOptions options,
-            MiddlewareDelegate<CFTFileContext> next)
+            MiddlewareDelegate<CFTFileContext> next,
+            ILogger<ValidateByXSDMiddleWare> logger,
+            ValidateByXSDOptions options)
+            : base(next, logger)
         {
             try
             {
@@ -34,11 +36,10 @@ namespace CFT.MiddleWare.Validation.XSD
                 throw new CFTConfigurationException("Ошибка при конфигурации модуля проверки по XSD схеме.", e);
             }
 
-            _next = next;
             _option = options;
         }
 
-        public Task InvokeAsync(CFTFileContext context)
+        protected override Task ExecAsync(CFTFileContext context)
         {
             List<string> errors = new List<string>();
 
@@ -64,7 +65,18 @@ namespace CFT.MiddleWare.Validation.XSD
             if (errors.Count > 0)
                 throw new CFTFileXSDValidationException(errors);
 
-            return _next(context);
+            return Task.CompletedTask;
+        }
+
+        protected override string StartMessage => "Проверка по XSD схеме.";
+
+        protected override string EndSuccessMessage => "Успешно проверили по XSD.";
+
+        protected override string EndErrorMessage => "Ошибка при проверке XSD схемы.";
+
+        protected override Task NextExceptionExecAsync(Exception e, CFTFileContext context)
+        {
+            return Task.CompletedTask;
         }
     }
 }

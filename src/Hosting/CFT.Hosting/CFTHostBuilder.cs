@@ -1,4 +1,6 @@
-﻿using CFT.Hosting.Decorators;
+﻿using CFT.Application;
+using CFT.FileProvider;
+using CFT.Hosting.Decorators;
 using CFT.Hosting.Extensions;
 using CFT.Hosting.Middleware;
 using CFT.MiddleWare.Base;
@@ -16,23 +18,15 @@ namespace CFT.Hosting
 {
     public class CFTHostBuilder : HostBuilder
     {
-        Action<HostBuilderContext, ICFTMiddlewareBuilder> _configure;
-
         public CFTHostBuilder()
         {
-        }
-
-        public CFTHostBuilder ConfigureApplication(Action<HostBuilderContext, ICFTMiddlewareBuilder> configure)
-        {
-            _configure = configure;
-            return this;
         }
 
         public new IHostBuilder ConfigureServices(Action<HostBuilderContext, IServiceCollection> configureDelegate)
         {
             void additionConfigureDelegate(HostBuilderContext ctx, IServiceCollection services)
             {
-                configureDelegate(ctx, services);
+                configureDelegate?.Invoke(ctx, services);
                 services.AddLogging();
                 services.AddHostedService<FileScanerHostedService>();
                 services.AddTransient<ICFTReadAllProcess, CFTReadAllProcess>();
@@ -52,16 +46,17 @@ namespace CFT.Hosting
 
         private ICFTMiddlewareBuilder GetCFTMiddlewareBuilder(HostBuilderContext ctx, IServiceProvider provider)
         {
+            var stepSection = ctx.Configuration.GetSection("Steps");
             var options = provider.GetRequiredService<IOptions<FileScanerOptions>>().Value;
 
             var result = new CFTMiddlewareBuilder(provider);
             result.UseMiddleware<LogScopeMiddleware, CFTFileContext>();
             if (options.UseBackup)
                 result.UseBackup(options.BackupPath);
-            _configure?.Invoke(ctx, result);
 
-            // УДАЛЕНИЕ ДОЛЖНО БЫТЬ ВСЕГДА В САМОМ КОНЦЕ!!!
-            result.UseRemoveSourceFile();
+            new AppicationConfiguration(options.FileProviderType, options.FileProviderSettings)
+                .ConfigureApplication(result, stepSection);
+
             return result;
         }
     }

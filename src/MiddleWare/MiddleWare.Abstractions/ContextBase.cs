@@ -8,5 +8,7 @@ namespace MiddleWare.Abstractions
     public abstract class ContextBase
     {
         public abstract IServiceProvider ContextServices { get; }
+
+        public Exception Error { get; internal set; }
     }
 }

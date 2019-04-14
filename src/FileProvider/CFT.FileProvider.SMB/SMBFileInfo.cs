@@ -19,14 +19,14 @@ namespace CFT.FileProvider.SMB
 
         public SMBFileInfo(SmbFile file)
         {
-            if (!file.IsFile())
-            {
-                throw new ArgumentException($"'{file.GetName()}' не является файлом.");
-            }
-            if (!file.Exists())
-            {
-                throw new ArgumentException($"Файл '{file.GetName()}' не существует.");
-            }
+            //if (!file.IsFile())
+            //{
+            //    throw new ArgumentException($"'{file.GetName()}' не является файлом.");
+            //}
+            //if (!file.Exists())
+            //{
+            //    throw new ArgumentException($"Файл '{file.GetName()}' не существует.");
+            //}
 
             _file = file;
         }
@@ -49,10 +49,15 @@ namespace CFT.FileProvider.SMB
             return stream;
         }
 
+        public Stream CreateWriteStream()
+        {
+            var stream = _file.GetOutputStream();
+            return stream;
+        }
+
         public void Delete()
         {
             _file.Delete();
-            _file = null;
         }
 
         public async Task RenameAsync(string newName)

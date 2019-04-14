@@ -1,6 +1,6 @@
 ﻿using CFT.Application.Abstractions.Exceptions;
 using CFT.MiddleWare.Base;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using MiddleWare.Abstractions;
 using System;
 using System.IO;
@@ -11,15 +11,16 @@ using System.Xml.Xsl;
 
 namespace CFT.MiddleWare.Transformations.XSLT
 {
-    public class XSLTransformContentMiddleWare
+    internal class XSLTransformContentMiddleWare : LogMiddlewareBase
     {
         readonly XslCompiledTransform _transform;
         readonly XSLTransformContentOptions _options;
-        readonly MiddlewareDelegate<CFTFileContext> _next;
 
         public XSLTransformContentMiddleWare(
-            XSLTransformContentOptions options,
-            MiddlewareDelegate<CFTFileContext> next)
+            MiddlewareDelegate<CFTFileContext> next,
+            ILogger<XSLTransformContentMiddleWare> logger,
+            XSLTransformContentOptions options)
+            : base(next, logger)
         {
             try
             {
@@ -40,10 +41,9 @@ namespace CFT.MiddleWare.Transformations.XSLT
                 throw new CFTConfigurationException("Что-то пошло не так во время загрузки XSLT файла.", e);
             }
             _options = options;
-            _next = next;
         }
 
-        public Task InvokeAsync(CFTFileContext context)
+        protected override Task ExecAsync(CFTFileContext context)
         {
             try
             {
@@ -73,7 +73,19 @@ namespace CFT.MiddleWare.Transformations.XSLT
                 throw new CFTApplicationException("Что-то пошло не так во время XSLT-преобразования файла.", e);
             }
 
-            return _next(context);
+            return Task.CompletedTask;
+        }
+
+
+        protected override string StartMessage => "Начинаем XSLT преобразование.";
+
+        protected override string EndSuccessMessage => "Успешно завершили XSLT преобразование.";
+
+        protected override string EndErrorMessage => "Ошибка XSLT преобразования.";
+
+        protected override Task NextExceptionExecAsync(Exception e, CFTFileContext context)
+        {
+            return Task.CompletedTask;
         }
     }
 }

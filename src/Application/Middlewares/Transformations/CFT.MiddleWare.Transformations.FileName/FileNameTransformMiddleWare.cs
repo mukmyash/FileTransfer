@@ -1,5 +1,6 @@
 ﻿using CFT.Application.Abstractions.Exceptions;
 using CFT.MiddleWare.Base;
+using Microsoft.Extensions.Logging;
 using MiddleWare.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,15 @@ using System.Threading.Tasks;
 
 namespace CFT.MiddleWare.Transformations.FileName
 {
-    class FileNameTransformMiddleWare
+    internal class FileNameTransformMiddleWare : LogMiddlewareBase
     {
         FileNameTransformOptions _options;
-        MiddlewareDelegate<CFTFileContext> _next;
 
         public FileNameTransformMiddleWare(
-            FileNameTransformOptions options,
-            MiddlewareDelegate<CFTFileContext> next)
+            MiddlewareDelegate<CFTFileContext> next,
+            ILogger<FileNameTransformMiddleWare> logger,
+            FileNameTransformOptions options)
+            : base(next, logger)
         {
             try
             {
@@ -28,29 +30,29 @@ namespace CFT.MiddleWare.Transformations.FileName
             }
 
             _options = options;
-            _next = next;
         }
 
-        public Task InvokeAsync(CFTFileContext context)
+        protected override Task ExecAsync(CFTFileContext context)
         {
             try
             {
                 var allParams = GetFileNameParameters(context.InputFile.FileName);
 
+                var newFileName = _options.FileMask;
                 foreach (var param in allParams)
                 {
-                    if (!context.OutputFile.FileName.Contains("@{"))
+                    if (!newFileName.Contains("@{"))
                         break;
-                    context.OutputFile.FileName = context.OutputFile.FileName.Replace(param.Key, param.Value);
+                    newFileName = newFileName.Replace(param.Key, param.Value);
                 }
-
+                context.OutputFile.FileName = newFileName;
             }
             catch (Exception e)
             {
                 throw new CFTApplicationException("Ошибка при переименовании файла.", e);
             }
 
-            return _next(context);
+            return Task.CompletedTask;
         }
 
         private Dictionary<string, string> GetFileNameParameters(string fileName)
@@ -61,6 +63,18 @@ namespace CFT.MiddleWare.Transformations.FileName
             return fileName
                 .Split("_").SelectMany(n => n.Split("-"))
                 .ToDictionary(v => $"@{{FP{++paramNumber}}}");
+
+        }
+
+        protected override string StartMessage => "Начинаем преобразование имени файла.";
+
+        protected override string EndSuccessMessage => "Успешно преобразовали имя файла.";
+
+        protected override string EndErrorMessage => "Ошибка преобразования имени файла.";
+
+        protected override Task NextExceptionExecAsync(Exception e, CFTFileContext context)
+        {
+            return Task.CompletedTask;
         }
 
     }

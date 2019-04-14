@@ -13,7 +13,8 @@ namespace CFT.FileProvider.Abstractions
         DateTimeOffset LastModified { get; }
         bool IsDirectory { get; }
         Stream CreateReadStream();
-        Task RenameAsync(string v);
+        Stream CreateWriteStream();
+        Task RenameAsync(string newName);
         void Delete();
     }
 }
