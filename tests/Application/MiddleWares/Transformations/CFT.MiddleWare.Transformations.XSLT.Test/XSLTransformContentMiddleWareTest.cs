@@ -6,6 +6,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using MiddleWare.Abstractions;
 using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -64,6 +65,20 @@ namespace CFT.MiddleWare.Transformations.XSLT.Test
                 });
             callConstructor.Should().Throw<CFTConfigurationException>()
                 .Which.InnerException.Should().BeOfType<CFTConfigurationException>();
+        }
+
+        [Fact(DisplayName = "XSLT файл не существует.")]
+        public void CreateFlowStep_FileNotFound()
+        {
+            Action callConstructor = () => new XSLTransformContentMiddleWare(
+                next: ctx => Task.CompletedTask,
+                logger: _loggerFixture.GetMockLogger<XSLTransformContentMiddleWare>(),
+                options: new XSLTransformContentOptions()
+                {
+                    XSLTPath = Path.Combine(".", "no.xslt")
+                });
+            callConstructor.Should().Throw<CFTConfigurationException>().Which
+                .InnerException.Should().BeOfType<CFTFileNotFoundException>();
         }
     }
 }

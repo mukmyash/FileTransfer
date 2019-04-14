@@ -47,12 +47,12 @@
       "Settings": {
         "Mask": "\\d*.xml",
         "Steps": [
-          //{
-          //  "Type": "XSDValidation",
-          //  "Settings": {
-          //    "XSDPath": "./XSD/test.xsd"
-          //  }
-          //},
+          {
+            "Type": "XSDValidation",
+            "Settings": {
+              "XSDPath": "./XSD/test.xsd"
+            }
+          },
           {
             "Type": "XSLTransformation",
             "Settings": {

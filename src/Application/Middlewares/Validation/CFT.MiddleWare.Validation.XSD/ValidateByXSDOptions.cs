@@ -5,7 +5,7 @@ using System.Xml.Schema;
 
 namespace CFT.MiddleWare.Validation.XSD
 {
-    public class ValidateByXSDOptions
+    public class ValidateByXSDOptions : IValidateByXSDOptions
     {
         public string XSDPath { get; set; }
 
@@ -13,17 +13,24 @@ namespace CFT.MiddleWare.Validation.XSD
 
         public void ValidationParams()
         {
-            if (string.IsNullOrWhiteSpace(XSDPath))
-                throw new CFTConfigurationException("Не указан путь до XSD файла.");
-
-            var xsdFileInfo = new FileInfo(XSDPath);
-            if (xsdFileInfo.Extension != ".xsd")
+            try
             {
-                throw new CFTFileBadFormatException($"Файл '{xsdFileInfo.FullName}' не является файлом XSD.");
-            }
+                if (string.IsNullOrWhiteSpace(XSDPath))
+                    throw new ArgumentNullException("Не указан путь до XSD.");
 
-            if (!xsdFileInfo.Exists)
-                throw new CFTFileNotFoundException($"Файл '{xsdFileInfo.FullName}' не существует.");
+                var xsdFileInfo = new FileInfo(XSDPath);
+                if (xsdFileInfo.Extension != ".xsd")
+                {
+                    throw new XSDFileFormatException(xsdFileInfo.FullName);
+                }
+
+                if (!xsdFileInfo.Exists)
+                    throw new XSDFileNotFoundException(xsdFileInfo.FullName);
+            }
+            catch (Exception e)
+            {
+                throw new XSDOptionException(nameof(XSDPath), e);
+            }
         }
     }
 }

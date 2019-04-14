@@ -15,25 +15,31 @@ namespace CFT.MiddleWare.Validation.XSD
 {
     internal class ValidateByXSDMiddleWare : LogMiddlewareBase
     {
-        XmlSchemaSet _schemas;
-        ValidateByXSDOptions _option;
+        XmlSchemaSet _schemas = new XmlSchemaSet();
+        IValidateByXSDOptions _option;
 
         public ValidateByXSDMiddleWare(
             MiddlewareDelegate<CFTFileContext> next,
             ILogger<ValidateByXSDMiddleWare> logger,
-            ValidateByXSDOptions options)
+            IValidateByXSDOptions options)
             : base(next, logger)
         {
             try
             {
                 options.ValidationParams();
 
-                _schemas = new XmlSchemaSet();
-                _schemas.Add(options.TargetNamespace, options.XSDPath);
+                try
+                {
+                    _schemas.Add(options.TargetNamespace, options.XSDPath);
+                }
+                catch (Exception e)
+                {
+                    throw new XSDFileFormatException(options.XSDPath, e);
+                }
             }
             catch (Exception e)
             {
-                throw new CFTConfigurationException("Ошибка при конфигурации модуля проверки по XSD схеме.", e);
+                throw new XSDModuleConfigurationException(e);
             }
 
             _option = options;
@@ -63,7 +69,7 @@ namespace CFT.MiddleWare.Validation.XSD
             }
 
             if (errors.Count > 0)
-                throw new CFTFileXSDValidationException(errors);
+                throw new XSDValidationException(errors);
 
             return Task.CompletedTask;
         }

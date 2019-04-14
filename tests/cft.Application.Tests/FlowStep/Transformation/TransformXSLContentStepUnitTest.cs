@@ -20,24 +20,6 @@
 //            _xsltFixture = xsltFixture;
 //        }
 
-//        [Theory(DisplayName = "Не передали путь к XSLT файлу.")]
-//        [InlineData(null)]
-//        [InlineData("")]
-//        [InlineData("   ")]
-//        public void CreateFlowStep_XSLTPath_NotSet(string path)
-//        {
-//            Action callConstructor = () => new TransformXSLContentStep(new TransformXSLContentStepOptions() { XSLTPath = path });
-//            callConstructor.Should().Throw<CFTConfigurationException>()
-//                .Which.InnerException.Should().BeOfType<CFTConfigurationException>();
-//        }
-
-//        [Fact(DisplayName = "XSLT файл не существует.")]
-//        public void CreateFlowStep_FileNotFound()
-//        {
-//            Action callConstructor = () => new TransformXSLContentStep(
-//                new TransformXSLContentStepOptions() { XSLTPath = Path.Combine(".", "no.xslt") });
-//            callConstructor.Should().Throw<CFTConfigurationException>().Which.InnerException.Should().BeOfType<CFTFileNotFoundException>();
-//        }
 
 //        [Fact(DisplayName = "Неверный формат файла XSLT.")]
 //        public void CreateFlowStep_FileBadFormat()
