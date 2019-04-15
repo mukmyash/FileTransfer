@@ -77,6 +77,8 @@ namespace CFT.MiddleWare.Manipulation.Export
                     return context.InputFile.FileContent;
                 case ExportFileType.Output:
                     return context.OutputFile.FileContent;
+                case ExportFileType.Exception:
+                    return Encoding.Default.GetBytes(context.Error.ToString());
                 default:
                     throw new Exception("Не известный тип файла.");
             }
@@ -89,6 +91,9 @@ namespace CFT.MiddleWare.Manipulation.Export
             {
                 case ExportFileType.Input:
                     fileName = context.InputFile.FileName;
+                    break;
+                case ExportFileType.Exception:
+                    fileName = string.Concat(context.InputFile.FileName, "_Error");
                     break;
                 case ExportFileType.Output:
                     fileName = context.OutputFile.FileName;

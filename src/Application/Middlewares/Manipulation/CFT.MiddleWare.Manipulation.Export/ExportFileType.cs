@@ -7,6 +7,7 @@ namespace CFT.MiddleWare.Manipulation.Export
     public enum ExportFileType
     {
         Input,
-        Output
+        Output,
+        Exception
     }
 }

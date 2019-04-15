@@ -38,6 +38,20 @@
                 "Password": "admin"
               }
             }
+          },
+          {
+            "Type": "Export",
+            "Settings": {
+              // Выгрузим информацию об ошибке.
+              "FileType": "Exception",
+              "Path": "Elements SE/ftp/Error/",
+              "FileProviderType": "SMB",
+              "FileProviderSettings": {
+                "ServerIP": "192.168.1.1",
+                "Login": "admin",
+                "Password": "admin"
+              }
+            }
           }
         ]
       }
