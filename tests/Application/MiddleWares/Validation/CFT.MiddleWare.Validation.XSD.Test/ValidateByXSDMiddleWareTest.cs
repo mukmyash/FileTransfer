@@ -4,12 +4,14 @@ using CFT.MiddleWare.Validation.XSD.Test.Fixtures;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using MiddleWare.Abstractions;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace CFT.MiddleWare.Validation.XSD.Test
 {
+    [Collection("XSDCollection")]
     public class ValidateByXSDMiddleWareTest :
         IClassFixture<XSDFixture>,
         IClassFixture<LoggerFixture>,
@@ -31,8 +33,10 @@ namespace CFT.MiddleWare.Validation.XSD.Test
         [Fact(DisplayName = "Успешно проверили по XSD (Namespace).")]
         public async Task InvokeAsync_Success_Namespace()
         {
+            var next = GetNextDelegate();
+
             var testClass = new ValidateByXSDMiddleWare(
-                next: ctx => Task.CompletedTask,
+                next: next,
                 logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
                 options: new ValidateByXSDOptions()
                 {
@@ -43,14 +47,20 @@ namespace CFT.MiddleWare.Validation.XSD.Test
                 applicationServices: new ServiceCollection().BuildServiceProvider(),
                 inputFile: _xmlFixture.GetFakeFileInfo(XMLFixture.XMLType.NAMESPACE));
 
-            await testClass.InvokeAsync(context);
+            Action call = () => testClass.InvokeAsync(context).GetAwaiter().GetResult();
+
+            call.Should().NotThrow();
+            A.CallTo(() => next.Invoke(A<CFTFileContext>.That.Matches((ctx) => ctx == context)))
+            .MustHaveHappenedOnceExactly();
         }
 
         [Fact(DisplayName = "Успешно проверили по XSD (Есть ошибка. Namespace).")]
         public void InvokeAsync_Success_Namespace_Error()
         {
+            var next = GetNextDelegate();
+
             var testClass = new ValidateByXSDMiddleWare(
-                next: ctx => Task.CompletedTask,
+                next: next,
                 logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
                 options: new ValidateByXSDOptions()
                 {
@@ -63,13 +73,17 @@ namespace CFT.MiddleWare.Validation.XSD.Test
 
             Action call = () => testClass.InvokeAsync(context).GetAwaiter().GetResult();
             call.Should().Throw<XSDValidationException>();
+            A.CallTo(() => next.Invoke(A<CFTFileContext>.That.Matches((ctx) => ctx == context)))
+            .MustNotHaveHappened();
         }
 
         [Fact(DisplayName = "Успешно проверили по XSD (AnyType).")]
         public async Task InvokeAsync_Success_AnyType()
         {
+            var next = GetNextDelegate();
+
             var testClass = new ValidateByXSDMiddleWare(
-                next: ctx => Task.CompletedTask,
+                next: next,
                 logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
                 options: new ValidateByXSDOptions()
                 {
@@ -80,7 +94,11 @@ namespace CFT.MiddleWare.Validation.XSD.Test
                 applicationServices: new ServiceCollection().BuildServiceProvider(),
                 inputFile: _xmlFixture.GetFakeFileInfo(XMLFixture.XMLType.SIMPLE));
 
-            await testClass.InvokeAsync(context);
+            Action call = () => testClass.InvokeAsync(context).GetAwaiter().GetResult();
+
+            call.Should().NotThrow();
+            A.CallTo(() => next.Invoke(A<CFTFileContext>.That.Matches((ctx) => ctx == context)))
+            .MustHaveHappenedOnceExactly();
         }
 
         [Fact(DisplayName = "Ошибка валидации опций.")]
@@ -91,7 +109,7 @@ namespace CFT.MiddleWare.Validation.XSD.Test
                 .Throws<Exception>();
 
             Action createInstance = () => new ValidateByXSDMiddleWare(
-                            next: ctx => Task.CompletedTask,
+                            next: GetNextDelegate(),
                             logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
                             options: options);
 
@@ -108,7 +126,7 @@ namespace CFT.MiddleWare.Validation.XSD.Test
                 .Returns(".\no.xsd");
 
             Action createInstance = () => new ValidateByXSDMiddleWare(
-                            next: ctx => Task.CompletedTask,
+                            next: GetNextDelegate(),
                             logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
                             options: options);
 
@@ -136,6 +154,15 @@ namespace CFT.MiddleWare.Validation.XSD.Test
             createInstance.Should()
                 .Throw<ArgumentNullException>()
                 .Which.ParamName.Should().Be("next");
+        }
+
+        private MiddlewareDelegate<CFTFileContext> GetNextDelegate()
+        {
+            var next = A.Fake<MiddlewareDelegate<CFTFileContext>>();
+            A.CallTo(() => next.Invoke(A<CFTFileContext>.Ignored))
+                .Returns(Task.CompletedTask);
+
+            return next;
         }
     }
 }

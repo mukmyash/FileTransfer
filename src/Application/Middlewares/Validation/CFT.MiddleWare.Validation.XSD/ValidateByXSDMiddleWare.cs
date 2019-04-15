@@ -13,6 +13,9 @@ using System.Xml.Schema;
 
 namespace CFT.MiddleWare.Validation.XSD
 {
+    /// <summary>
+    /// Мидлвара для проверки файла по XSD схеме.
+    /// </summary>
     internal class ValidateByXSDMiddleWare : LogMiddlewareBase
     {
         XmlSchemaSet _schemas = new XmlSchemaSet();

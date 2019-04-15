@@ -10,6 +10,12 @@ namespace CFT.MiddleWare.Validation.XSD
 {
     public static class MiddleWareBuilderExtension
     {
+        /// <summary>
+        /// Шаг проверки файла по XSD схеме.
+        /// </summary>
+        /// <param name="app">Сборщик мидлвар.</param>
+        /// <param name="configSection">настройки для мидлвары</param>
+        /// <returns>Сборщик мидлвар с добавленным шагом проверки по схеме.</returns>
         public static IMiddlewareBuilder<CFTFileContext> UseValidationXSD(
             this IMiddlewareBuilder<CFTFileContext> app,
             IConfigurationSection configSection)
@@ -20,6 +26,12 @@ namespace CFT.MiddleWare.Validation.XSD
             });
         }
 
+        /// <summary>
+        /// Шаг проверки файла по XSD схеме.
+        /// </summary>
+        /// <param name="app">Сборщик мидлвар.</param>
+        /// <param name="configOption">настройки для мидлвары</param>
+        /// <returns>Сборщик мидлвар с добавленным шагом проверки по схеме.</returns>
         public static IMiddlewareBuilder<CFTFileContext> UseValidationXSD(
             this IMiddlewareBuilder<CFTFileContext> app,
             Action<ValidateByXSDOptions> configOption)

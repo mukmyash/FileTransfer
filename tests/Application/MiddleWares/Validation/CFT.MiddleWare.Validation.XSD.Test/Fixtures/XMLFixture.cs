@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CFT.MiddleWare.Validation.XSD.Test.Fixtures
 {
-    public class XMLFixture
+    public class XMLFixture : IDisposable
     {
         private readonly string PATH = Path.Combine(".", "xml");
         public enum XMLType

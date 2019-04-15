@@ -4,10 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Xunit;
 
 namespace CFT.MiddleWare.Validation.XSD.Test.Fixtures
 {
-    public class XSDFixture
+    [CollectionDefinition("XSDCollection")]
+    public class XSDCollection : ICollectionFixture<XSDFixture>
+    {
+    }
+    public class XSDFixture : IDisposable
     {
         private readonly string PATH = Path.Combine(".", "xsd");
 
