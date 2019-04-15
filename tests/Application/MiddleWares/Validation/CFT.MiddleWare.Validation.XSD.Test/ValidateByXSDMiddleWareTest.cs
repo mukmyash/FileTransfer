@@ -33,7 +33,7 @@ namespace CFT.MiddleWare.Validation.XSD.Test
         [Fact(DisplayName = "Успешно проверили по XSD (Namespace).")]
         public async Task InvokeAsync_Success_Namespace()
         {
-            var next = GetNextDelegate();
+            var next = GetNextDelegate(isThrow: false);
 
             var testClass = new ValidateByXSDMiddleWare(
                 next: next,
@@ -57,7 +57,7 @@ namespace CFT.MiddleWare.Validation.XSD.Test
         [Fact(DisplayName = "Успешно проверили по XSD (Есть ошибка. Namespace).")]
         public void InvokeAsync_Success_Namespace_Error()
         {
-            var next = GetNextDelegate();
+            var next = GetNextDelegate(isThrow: false);
 
             var testClass = new ValidateByXSDMiddleWare(
                 next: next,
@@ -77,10 +77,34 @@ namespace CFT.MiddleWare.Validation.XSD.Test
             .MustNotHaveHappened();
         }
 
+        [Fact(DisplayName = "Пробросили исключение из next дальше.")]
+        public void InvokeAsync_Next_Error()
+        {
+            var next = GetNextDelegate(isThrow: true);
+
+            var testClass = new ValidateByXSDMiddleWare(
+                next: next,
+                logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
+                options: new ValidateByXSDOptions()
+                {
+                    XSDPath = _xsdFixture.GetFullPath(XSDFixture.FILENAME_XSD_NAMESPACE)
+                });
+
+            var context = new CFTFileContext(
+                applicationServices: new ServiceCollection().BuildServiceProvider(),
+                inputFile: _xmlFixture.GetFakeFileInfo(XMLFixture.XMLType.NAMESPACE));
+
+            Action call = () => testClass.InvokeAsync(context).GetAwaiter().GetResult();
+
+            call.Should().Throw<FakeException>();
+            A.CallTo(() => next.Invoke(A<CFTFileContext>.That.Matches((ctx) => ctx == context)))
+            .MustHaveHappenedOnceExactly();
+        }
+
         [Fact(DisplayName = "Успешно проверили по XSD (AnyType).")]
         public async Task InvokeAsync_Success_AnyType()
         {
-            var next = GetNextDelegate();
+            var next = GetNextDelegate(isThrow: false);
 
             var testClass = new ValidateByXSDMiddleWare(
                 next: next,
@@ -109,7 +133,7 @@ namespace CFT.MiddleWare.Validation.XSD.Test
                 .Throws<Exception>();
 
             Action createInstance = () => new ValidateByXSDMiddleWare(
-                            next: GetNextDelegate(),
+                            next: GetNextDelegate(isThrow: false),
                             logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
                             options: options);
 
@@ -126,7 +150,7 @@ namespace CFT.MiddleWare.Validation.XSD.Test
                 .Returns(".\no.xsd");
 
             Action createInstance = () => new ValidateByXSDMiddleWare(
-                            next: GetNextDelegate(),
+                            next: GetNextDelegate(isThrow: false),
                             logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
                             options: options);
 
@@ -156,11 +180,15 @@ namespace CFT.MiddleWare.Validation.XSD.Test
                 .Which.ParamName.Should().Be("next");
         }
 
-        private MiddlewareDelegate<CFTFileContext> GetNextDelegate()
+        private MiddlewareDelegate<CFTFileContext> GetNextDelegate(bool isThrow)
         {
             var next = A.Fake<MiddlewareDelegate<CFTFileContext>>();
-            A.CallTo(() => next.Invoke(A<CFTFileContext>.Ignored))
-                .Returns(Task.CompletedTask);
+            var NextInvoke = A.CallTo(() => next.Invoke(A<CFTFileContext>.Ignored));
+
+            if (isThrow)
+                NextInvoke.Throws<FakeException>();
+            else
+                NextInvoke.Returns(Task.CompletedTask);
 
             return next;
         }
