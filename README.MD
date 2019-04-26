@@ -80,3 +80,142 @@
 - FileProviderType - тип поставщика файлов 
 - FileProviderSettings - Настройки поставщика файлов
 - Path - путь для экспорта
+
+
+# Пример конфигурации
+
+``` JSON
+{
+  "Logging": {
+    "Console": {
+      "IncludeScopes": true,
+      "LogLevel": {
+        "Default": "Trace"
+      }
+    },
+    "LogLevel": {
+      "Default": "Trace"
+    }
+  },
+  "FileScannerHostedService": {
+    "BackupPath": "./backup/files",
+    "WatchPath": "Elements SE/ftp/Start",
+    "ScanPeriodSeconds": 5,
+    "FileProviderType": "SMB",
+    "FileProviderSettings": {
+      "ServerIP": "192.168.1.1",
+      "Login": "admin",
+      "Password": "admin"
+    }
+  },
+  "Steps": [
+    {
+      "Type": "MapWhenException",
+      "Settings": {
+        "Steps": [
+          {
+            "Type": "Export",
+            "Settings": {
+              "FileType": "Input",
+              "Path": "Elements SE/ftp/Error/",
+              "FileProviderType": "SMB",
+              "FileProviderSettings": {
+                "ServerIP": "192.168.1.1",
+                "Login": "admin",
+                "Password": "admin"
+              }
+            }
+          },
+          {
+            "Type": "Export",
+            "Settings": {
+              "FileType": "Exception",
+              "Path": "Elements SE/ftp/Error/",
+              "FileProviderType": "SMB",
+              "FileProviderSettings": {
+                "ServerIP": "192.168.1.1",
+                "Login": "admin",
+                "Password": "admin"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Type": "MapWhenFileName",
+      "Settings": {
+        "Mask": "\\d*.xml",
+        "Steps": [
+          {
+            "Type": "XSDValidation",
+            "Settings": {
+              "XSDPath": "./XSD/test.xsd"
+            }
+          },
+          {
+            "Type": "XSLTransformation",
+            "Settings": {
+              "XSLTPath": "./XSLT/test.xslt"
+            }
+          },
+          {
+            "Type": "Export",
+            "Settings": {
+              "FileType": "Output",
+              "Path": "Elements SE/ftp/Success/",
+              "FileProviderType": "SMB",
+              "FileProviderSettings": {
+                "ServerIP": "192.168.1.1",
+                "Login": "admin",
+                "Password": "admin"
+              }
+            }
+          }
+
+        ]
+      }
+    },
+    {
+      "Type": "MapWhenFileName",
+      "Settings": {
+        "Mask": "\\w*.txt",
+        "Steps": [
+          {
+            "Type": "FileNameTransformation",
+            "Settings": {
+              "FileMask": "@{FP1}_@{FP2}.txt"
+            }
+          },
+          {
+            "Type": "Export",
+            "Settings": {
+              "FileType": "Output",
+              "Path": "Elements SE/ftp/Success/",
+              "FileProviderType": "SMB",
+              "FileProviderSettings": {
+                "ServerIP": "192.168.1.1",
+                "Login": "admin",
+                "Password": "admin"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Type": "Export",
+      "Settings": {
+        "FileType": "Input",
+        "Path": "Elements SE/ftp/ErrorMapping/",
+        "FileProviderType": "SMB",
+        "FileProviderSettings": {
+          "ServerIP": "192.168.1.1",
+          "Login": "admin",
+          "Password": "admin"
+        }
+      }
+    }
+  ]
+}
+```
