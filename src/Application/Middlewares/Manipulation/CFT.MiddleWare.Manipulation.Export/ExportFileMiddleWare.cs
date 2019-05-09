@@ -34,7 +34,7 @@ namespace CFT.MiddleWare.Manipulation.Export
             }
             catch (Exception e)
             {
-                throw new CFTConfigurationException("Ошибка при конфигурации модуля проверки по XSD схеме.", e);
+                throw new CFTConfigurationException("Ошибка при конфигурации модуля экспорта файла.", e);
             }
 
             _option = options;
