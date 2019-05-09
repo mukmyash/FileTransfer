@@ -14,7 +14,8 @@ namespace CFT.MiddleWare.Validation.XSD.Test.Fixtures
         {
             SIMPLE,
             NAMESPACE,
-            ATTRIBUTES
+            ATTRIBUTES,
+            DTD_NAMESPACE
         }
 
         public const string FILENAME_XML = "simple.xml";
@@ -38,6 +39,14 @@ namespace CFT.MiddleWare.Validation.XSD.Test.Fixtures
         <Child2>content1</Child2>
     </ns1:Root>";
 
+        public const string FILENAME_XML_DTD_NAMESPACE = "dtd_namespace.xml";
+        public const string CONTENT_XML_DTD_NAMESPACE =
+    @"<?xml version='1.0' encoding='utf-8' standalone='no'?>
+    <!DOCTYPE BPS SYSTEM 'bpml.dtd'>
+    <ns1:Root xmlns:ns1='http://NamespaceTest.com/CustomerTypes'>
+        <Child1>content1</Child1>
+        <Child2>content1</Child2>
+    </ns1:Root>";
 
 
         public ICFTInputFileInfo GetFakeFileInfo(XMLType type)
@@ -54,6 +63,9 @@ namespace CFT.MiddleWare.Validation.XSD.Test.Fixtures
                 case XMLType.SIMPLE:
                     content = CONTENT_XML;
                     break;
+                case XMLType.DTD_NAMESPACE:
+                    content = CONTENT_XML_DTD_NAMESPACE;
+                    break;
             }
             var fakeFileInfo = A.Fake<ICFTInputFileInfo>();
             A.CallTo(() => fakeFileInfo.FileContent)
@@ -68,6 +80,7 @@ namespace CFT.MiddleWare.Validation.XSD.Test.Fixtures
                 case FILENAME_XML:
                 case FILENAME_XML_ATTRIBUTES:
                 case FILENAME_XML_NAMESPACE:
+                case FILENAME_XML_DTD_NAMESPACE:
                     break;
                 default:
                     throw new Exception($"Файл '{fileName}' не создавался.");
@@ -81,6 +94,7 @@ namespace CFT.MiddleWare.Validation.XSD.Test.Fixtures
             { FILENAME_XML, CONTENT_XML },
             { FILENAME_XML_ATTRIBUTES,  CONTENT_XML_ATTRIBUTES},
             { FILENAME_XML_NAMESPACE,  CONTENT_XML_NAMESPACE },
+            { FILENAME_XML_DTD_NAMESPACE,  CONTENT_XML_DTD_NAMESPACE },
         };
 
         public XMLFixture()

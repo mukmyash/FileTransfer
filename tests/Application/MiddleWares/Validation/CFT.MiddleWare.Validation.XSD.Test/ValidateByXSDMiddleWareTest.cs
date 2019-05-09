@@ -30,6 +30,30 @@ namespace CFT.MiddleWare.Validation.XSD.Test
             _loggerFixture = loggerFixture;
         }
 
+        [Fact(DisplayName = "Успешно проверили по XSD (DTD, Namespace).")]
+        public async Task InvokeAsync_Success_DTD_Namespace()
+        {
+            var next = GetNextDelegate(isThrow: false);
+
+            var testClass = new ValidateByXSDMiddleWare(
+                next: next,
+                logger: _loggerFixture.GetMockLogger<ValidateByXSDMiddleWare>(),
+                options: new ValidateByXSDOptions()
+                {
+                    XSDPath = _xsdFixture.GetFullPath(XSDFixture.FILENAME_XSD_NAMESPACE)
+                });
+
+            var context = new CFTFileContext(
+                applicationServices: new ServiceCollection().BuildServiceProvider(),
+                inputFile: _xmlFixture.GetFakeFileInfo(XMLFixture.XMLType.DTD_NAMESPACE));
+
+            Action call = () => testClass.InvokeAsync(context).GetAwaiter().GetResult();
+
+            call.Should().NotThrow();
+            A.CallTo(() => next.Invoke(A<CFTFileContext>.That.Matches((ctx) => ctx == context)))
+            .MustHaveHappenedOnceExactly();
+        }
+
         [Fact(DisplayName = "Успешно проверили по XSD (Namespace).")]
         public async Task InvokeAsync_Success_Namespace()
         {

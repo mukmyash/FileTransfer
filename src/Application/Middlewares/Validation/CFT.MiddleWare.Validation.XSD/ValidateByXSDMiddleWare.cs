@@ -62,6 +62,10 @@ namespace CFT.MiddleWare.Validation.XSD
             };
             xmlSettings.IgnoreComments = true;
             xmlSettings.IgnoreWhitespace = true;
+            // отключим проверку DTD т.к она не нужна. 
+            // ЕСЛИ ВДРУГ КОГДА-ТО ПОНАДОБИТСЯ...
+            // ТО пробросим в опции эту настройку.
+            xmlSettings.DtdProcessing = DtdProcessing.Ignore;
 
             using (var readStream = new MemoryStream(context.OutputFile.FileContent))
             {
