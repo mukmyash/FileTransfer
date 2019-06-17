@@ -4,6 +4,7 @@ using CFT.Hosting.Decorators;
 using CFT.Hosting.Extensions;
 using CFT.Hosting.Middleware;
 using CFT.MiddleWare.Base;
+using CFT.MiddleWare.Transformations.FileName;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,10 +39,19 @@ namespace CFT.Hosting
                 });
                 services.AddSingleton<IFileProviderFactory, FileProviderFactory>();
                 services.Configure<FileScanerOptions>(options => ctx.Configuration.GetSection("FileScannerHostedService").Bind(options));
+
+                RegisterMiddlewareServices(services);
             }
 
             base.ConfigureServices(additionConfigureDelegate);
             return this;
+        }
+
+        private IServiceCollection RegisterMiddlewareServices(IServiceCollection services)
+        {
+            services.AddTransformFileNameServices();
+
+            return services;
         }
 
         private ICFTMiddlewareBuilder GetCFTMiddlewareBuilder(HostBuilderContext ctx, IServiceProvider provider)

@@ -1,5 +1,7 @@
 ﻿using CFT.Application.Abstractions.Exceptions;
 using CFT.MiddleWare.Base;
+using CFT.MiddleWare.Transformations.FileName.ParametersExtracter;
+using CFT.MiddleWare.Transformations.FileName.ParametersExtracter.Options;
 using Microsoft.Extensions.Logging;
 using MiddleWare.Abstractions;
 using System;
@@ -13,16 +15,19 @@ namespace CFT.MiddleWare.Transformations.FileName
     internal class FileNameTransformMiddleWare : LogMiddlewareBase
     {
         FileNameTransformOptions _options;
+        ParameterExtracterBase _parameterExtracterBase;
 
         public FileNameTransformMiddleWare(
             MiddlewareDelegate<CFTFileContext> next,
             ILogger<FileNameTransformMiddleWare> logger,
+            IParameterExtracterFactory parameterExtracterFactory,
             FileNameTransformOptions options)
             : base(next, logger)
         {
             try
             {
                 options.ValidationParams();
+                _parameterExtracterBase = parameterExtracterFactory.GetParameterExtracterFlow(options.ParametersDescription);
             }
             catch (Exception e)
             {
@@ -36,14 +41,14 @@ namespace CFT.MiddleWare.Transformations.FileName
         {
             try
             {
-                var allParams = GetFileNameParameters(context.InputFile.FileName);
+                var allParams = _parameterExtracterBase.Extract((ParameterContext)context);
 
                 var newFileName = _options.FileMask;
                 foreach (var param in allParams)
                 {
                     if (!newFileName.Contains("@{"))
                         break;
-                    newFileName = newFileName.Replace(param.Key, param.Value);
+                    newFileName = newFileName.Replace($"@{{{param.Key}}}", param.Value);
                 }
                 context.OutputFile.FileName = newFileName;
             }
@@ -53,17 +58,6 @@ namespace CFT.MiddleWare.Transformations.FileName
             }
 
             return Task.CompletedTask;
-        }
-
-        private Dictionary<string, string> GetFileNameParameters(string fileName)
-        {
-            int paramNumber = 0;
-
-            // Параметры из имени файла имеют формат: @{FP1}, @{FP2}, ....
-            return fileName
-                .Split('_').SelectMany(n => n.Split('-'))
-                .ToDictionary(v => $"@{{FP{++paramNumber}}}");
-
         }
 
         protected override string StartMessage => "Начинаем преобразование имени файла.";
