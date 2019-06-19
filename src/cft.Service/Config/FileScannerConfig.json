@@ -98,7 +98,23 @@
           {
             "Type": "FileNameTransformation",
             "Settings": {
-              "FileMask": "@{FP1}_@{FP2}.txt"
+              "FileMask": "@{FP1}_@{FP2}.txt",
+              "ParametersDescription": [
+                {
+                  "ParameterName": "FP",
+                  "FileType": "Input",
+                  "DefaultValue": "0",
+                  "ParameterType": "FileName",
+                  "Separators": [ "_", "-" ]
+                },
+                {
+                  "ParameterName": "XML",
+                  "FileType": "Output",
+                  "DefaultValue": "VALUE",
+                  "ParameterType": "XMLContent",
+                  "XPath": "/xpath/to/element/or/attribute"
+                }
+              ]
             }
           },
           {

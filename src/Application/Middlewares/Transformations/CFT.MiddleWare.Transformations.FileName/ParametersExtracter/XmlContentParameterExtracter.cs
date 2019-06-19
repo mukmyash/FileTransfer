@@ -20,7 +20,10 @@ namespace CFT.MiddleWare.Transformations.FileName.ParametersExtracter
 
         public override Dictionary<string, string> Extract(ParameterContext ctx)
         {
-            var result = _next.Extract(ctx);
+            var result = _next?.Extract(ctx);
+            if (result == null)
+                result = new Dictionary<string, string>();
+
             XmlNode selectedNode;
             switch (_options.FileType)
             {
@@ -34,7 +37,12 @@ namespace CFT.MiddleWare.Transformations.FileName.ParametersExtracter
                     throw new Exception("Данный тип файла не поддерживается.");
             }
 
-            var value = string.IsNullOrEmpty(selectedNode?.Value) ? _options.DefaultValue : selectedNode.Value;
+            var value =
+                selectedNode == null ?
+                null : selectedNode.NodeType != XmlNodeType.Attribute ?
+                selectedNode.InnerText : selectedNode.Value;
+
+            value = string.IsNullOrEmpty(value) ? _options.DefaultValue : value;
 
             result.Add(_options.ParameterName, value);
             return result;

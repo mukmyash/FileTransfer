@@ -75,11 +75,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manipulation", "Manipulatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CFT.FileProvider", "src\FileProvider\CFT.FileProvider\CFT.FileProvider.csproj", "{4ABA1F9D-CAEF-4DE3-958C-E1999E4C528A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFT.Application", "src\Application\CFT.Application\CFT.Application.csproj", "{86AA697A-8541-4982-AC1C-F64D63176AFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CFT.Application", "src\Application\CFT.Application\CFT.Application.csproj", "{86AA697A-8541-4982-AC1C-F64D63176AFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFT.MiddleWare.Manipulation.Export", "src\Application\Middlewares\Manipulation\CFT.MiddleWare.Manipulation.Export\CFT.MiddleWare.Manipulation.Export.csproj", "{322C9DE6-937C-44FD-BD41-9DB54BAB2D68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CFT.MiddleWare.Manipulation.Export", "src\Application\Middlewares\Manipulation\CFT.MiddleWare.Manipulation.Export\CFT.MiddleWare.Manipulation.Export.csproj", "{322C9DE6-937C-44FD-BD41-9DB54BAB2D68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFT.MiddleWare.Manipulation.Remove", "src\Application\Middlewares\Manipulation\CFT.MiddleWare.Manipulation.Remove\CFT.MiddleWare.Manipulation.Remove.csproj", "{4A304E0F-E88A-4696-BE8B-70613EE9910D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CFT.MiddleWare.Manipulation.Remove", "src\Application\Middlewares\Manipulation\CFT.MiddleWare.Manipulation.Remove\CFT.MiddleWare.Manipulation.Remove.csproj", "{4A304E0F-E88A-4696-BE8B-70613EE9910D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFT.MiddleWare.Transformations.FileName.Test", "tests\Application\MiddleWares\Transformations\CFT.MiddleWare.Transformations.FileName.Test\CFT.MiddleWare.Transformations.FileName.Test.csproj", "{C3A03534-7798-4078-94E6-78F7B19DD5D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -343,6 +345,18 @@ Global
 		{4A304E0F-E88A-4696-BE8B-70613EE9910D}.Release|x64.Build.0 = Release|Any CPU
 		{4A304E0F-E88A-4696-BE8B-70613EE9910D}.Release|x86.ActiveCfg = Release|Any CPU
 		{4A304E0F-E88A-4696-BE8B-70613EE9910D}.Release|x86.Build.0 = Release|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Debug|x64.Build.0 = Debug|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Debug|x86.Build.0 = Debug|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Release|x64.ActiveCfg = Release|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Release|x64.Build.0 = Release|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -384,6 +398,7 @@ Global
 		{86AA697A-8541-4982-AC1C-F64D63176AFC} = {775FDE49-9460-4BCF-989B-594E7F318617}
 		{322C9DE6-937C-44FD-BD41-9DB54BAB2D68} = {B9400D3E-39CF-4292-80B4-CEAA5590AE9A}
 		{4A304E0F-E88A-4696-BE8B-70613EE9910D} = {B9400D3E-39CF-4292-80B4-CEAA5590AE9A}
+		{C3A03534-7798-4078-94E6-78F7B19DD5D7} = {6DF721E4-8F02-4A32-A68F-60D0D3770483}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58E23701-55B0-47D7-B73B-4104C306CA9D}
