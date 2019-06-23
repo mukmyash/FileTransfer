@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentFTP" Version="23.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
@@ -18,6 +19,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\CFT.Application\CFT.Application.csproj" />
     <ProjectReference Include="..\Hosting\CFT.Hosting\CFT.Hosting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>System</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
