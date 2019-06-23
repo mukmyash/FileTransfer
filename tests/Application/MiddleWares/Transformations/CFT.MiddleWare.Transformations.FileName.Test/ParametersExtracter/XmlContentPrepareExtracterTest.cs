@@ -20,7 +20,7 @@ namespace CFT.MiddleWare.Transformations.FileName.Test.ParametersExtracter
             _xmlDataFixture = xmlDataFixture;
         }
 
-        [Fact]
+        [Fact(DisplayName = "Проверили корректность парсинга.")]
         public void XmlContentPrepareExtracter_Extract_CheckOutputXml()
         {
             var testClass = new XmlContentPrepareExtracter(null);
@@ -33,20 +33,6 @@ namespace CFT.MiddleWare.Transformations.FileName.Test.ParametersExtracter
             testClass.Extract(ctx);
 
             _xmlDataFixture.CheckXmlElement(ctx.XmlRootOutput);
-        }
-
-        [Fact]
-        public void XmlContentPrepareExtracter_Extract_CheckInputXml()
-        {
-            var testClass = new XmlContentPrepareExtracter(null);
-
-            var ctx = _xmlDataFixture.GetParameterContext();
-
-            ctx.XmlRootInput.Should().BeNull();
-            ctx.XmlRootOutput.Should().BeNull();
-
-            testClass.Extract(ctx);
-
             _xmlDataFixture.CheckXmlElement(ctx.XmlRootInput);
         }
 
@@ -66,8 +52,7 @@ namespace CFT.MiddleWare.Transformations.FileName.Test.ParametersExtracter
                 .And.BeEmpty();
         }
 
-
-        [Fact]
+        [Fact(DisplayName = "Значения из нижележащего Extracter не потерялись")]
         public void XmlContentPrepareExtracter_Extract_CheckCallNextDictionary()
         {
             var ctx = _xmlDataFixture.GetParameterContext();

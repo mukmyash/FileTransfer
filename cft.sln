@@ -81,7 +81,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CFT.MiddleWare.Manipulation
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CFT.MiddleWare.Manipulation.Remove", "src\Application\Middlewares\Manipulation\CFT.MiddleWare.Manipulation.Remove\CFT.MiddleWare.Manipulation.Remove.csproj", "{4A304E0F-E88A-4696-BE8B-70613EE9910D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFT.MiddleWare.Transformations.FileName.Test", "tests\Application\MiddleWares\Transformations\CFT.MiddleWare.Transformations.FileName.Test\CFT.MiddleWare.Transformations.FileName.Test.csproj", "{C3A03534-7798-4078-94E6-78F7B19DD5D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CFT.MiddleWare.Transformations.FileName.Test", "tests\Application\MiddleWares\Transformations\CFT.MiddleWare.Transformations.FileName.Test\CFT.MiddleWare.Transformations.FileName.Test.csproj", "{C3A03534-7798-4078-94E6-78F7B19DD5D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{B08EF74A-FF11-4BAB-AE94-59A97DDF8549}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MiddleWares", "MiddleWares", "{0223A116-29A1-40F7-B92D-14A957693AFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transformations", "Transformations", "{26BDCEB2-211B-481C-A74F-FE004FD10F47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFT.MiddleWare.Transformations.FileName.Benchmarks", "benchmarks\Application\MiddleWares\Transformations\CFT.MiddleWare.Transformations.FileName.Benchmarks\CFT.MiddleWare.Transformations.FileName.Benchmarks.csproj", "{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -357,6 +365,18 @@ Global
 		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Release|x64.Build.0 = Release|Any CPU
 		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Release|x86.ActiveCfg = Release|Any CPU
 		{C3A03534-7798-4078-94E6-78F7B19DD5D7}.Release|x86.Build.0 = Release|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Debug|x64.Build.0 = Debug|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Debug|x86.Build.0 = Debug|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Release|x64.ActiveCfg = Release|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Release|x64.Build.0 = Release|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Release|x86.ActiveCfg = Release|Any CPU
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -399,6 +419,10 @@ Global
 		{322C9DE6-937C-44FD-BD41-9DB54BAB2D68} = {B9400D3E-39CF-4292-80B4-CEAA5590AE9A}
 		{4A304E0F-E88A-4696-BE8B-70613EE9910D} = {B9400D3E-39CF-4292-80B4-CEAA5590AE9A}
 		{C3A03534-7798-4078-94E6-78F7B19DD5D7} = {6DF721E4-8F02-4A32-A68F-60D0D3770483}
+		{B08EF74A-FF11-4BAB-AE94-59A97DDF8549} = {D2A85FC6-F1F5-416E-80C1-2DE5AB18B1C2}
+		{0223A116-29A1-40F7-B92D-14A957693AFC} = {B08EF74A-FF11-4BAB-AE94-59A97DDF8549}
+		{26BDCEB2-211B-481C-A74F-FE004FD10F47} = {0223A116-29A1-40F7-B92D-14A957693AFC}
+		{9D3CFDAF-6B13-4B78-BF0B-91413BC6D49B} = {26BDCEB2-211B-481C-A74F-FE004FD10F47}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58E23701-55B0-47D7-B73B-4104C306CA9D}

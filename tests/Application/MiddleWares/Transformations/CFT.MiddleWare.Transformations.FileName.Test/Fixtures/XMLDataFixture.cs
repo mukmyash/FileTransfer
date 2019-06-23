@@ -27,16 +27,25 @@ namespace CFT.MiddleWare.Transformations.FileName.Test.Fixtures
         internal ParameterContext GetParameterContext()
         {
             return new ParameterContext(
-                context: new Base.CFTFileContext(
-                    applicationServices: new ServiceCollection().BuildServiceProvider(),
-                    inputFile: this.GetFakeFileInfo()));
+                context: this.GetContext());
         }
-
+        /// <summary>
+        /// Получаем контекст формирования параметров.
+        /// </summary>
+        /// <returns></returns>
+        internal CFTFileContext GetContext()
+        {
+            return new Base.CFTFileContext(
+                    applicationServices: new ServiceCollection().BuildServiceProvider(),
+                    inputFile: this.GetFakeFileInfo());
+        }
         public ICFTInputFileInfo GetFakeFileInfo()
         {
             var fakeFileInfo = A.Fake<ICFTInputFileInfo>();
             A.CallTo(() => fakeFileInfo.FileContent)
                 .Returns(Encoding.Default.GetBytes(CONTENT_DATA_XML));
+            A.CallTo(() => fakeFileInfo.FileName)
+                .Returns("XML_DATA_CONTENT.xml");
             return fakeFileInfo;
         }
 

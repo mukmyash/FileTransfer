@@ -19,7 +19,7 @@ namespace CFT.MiddleWare.Transformations.FileName.Test.ParametersExtracter
             _xmlDataFixture = xmlDataFixture;
         }
 
-        [Theory]
+        [Theory(DisplayName ="Извлекли значение из XML документа.")]
         [InlineData("xmlAtr", XMLDataFixture.XPATH_ATTRIBUTE, XMLDataFixture.XPATH_ATTRIBUTE_VALUE)]
         [InlineData("xmlEl", XMLDataFixture.XPATH_ELEMENT, XMLDataFixture.XPATH_ELEMENT_VALUE)]
         public void XmlContentParameterExtracter_Extract(string paramName, string xpath, string value)
@@ -34,7 +34,7 @@ namespace CFT.MiddleWare.Transformations.FileName.Test.ParametersExtracter
             result[paramName].Should().Be(value);
         }
 
-        [Fact]
+        [Fact(DisplayName ="Подставили дефолтное значение.")]
         public void XmlContentParameterExtracter_Extract_DefaulValue()
         {
             var options = new XmlContentParameterDescriptionOption("/test/xml/path", "testParam", ExtractFileType.Output, "default value");
@@ -47,8 +47,7 @@ namespace CFT.MiddleWare.Transformations.FileName.Test.ParametersExtracter
             result["testParam"].Should().Be("default value");
         }
 
-
-        [Fact]
+        [Fact(DisplayName ="Значения из нижележащего Extracter не потерялись")]
         public void XmlContentParameterExtracter_Extract_CheckCallNextDictionary()
         {
             var options = new XmlContentParameterDescriptionOption("/el1/el2/el3", "xmlParam", ExtractFileType.Input, "0");
