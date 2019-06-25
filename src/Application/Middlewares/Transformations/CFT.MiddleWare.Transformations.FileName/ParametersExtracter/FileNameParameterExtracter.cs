@@ -45,7 +45,10 @@ namespace CFT.MiddleWare.Transformations.FileName.ParametersExtracter
             foreach (var c in fileName)
             {
                 if (!_options.Separators.Contains(c))
+                {
                     buffer.Append(c);
+                    continue;
+                }
 
                 var parameterValue = buffer.ToString();
                 parameterValue = string.IsNullOrEmpty(parameterValue) ? _options.DefaultValue : parameterValue;

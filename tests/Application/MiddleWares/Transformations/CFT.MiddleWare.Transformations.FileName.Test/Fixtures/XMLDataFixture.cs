@@ -24,28 +24,29 @@ namespace CFT.MiddleWare.Transformations.FileName.Test.Fixtures
         /// Получаем контекст формирования параметров.
         /// </summary>
         /// <returns></returns>
-        internal ParameterContext GetParameterContext()
+        internal ParameterContext GetParameterContext(string fileName = "XML_DATA_CONTENT.xml")
         {
             return new ParameterContext(
-                context: this.GetContext());
+                context: this.GetContext(fileName));
         }
         /// <summary>
         /// Получаем контекст формирования параметров.
         /// </summary>
         /// <returns></returns>
-        internal CFTFileContext GetContext()
+        internal CFTFileContext GetContext(string fileName = "XML_DATA_CONTENT.xml")
         {
             return new Base.CFTFileContext(
                     applicationServices: new ServiceCollection().BuildServiceProvider(),
-                    inputFile: this.GetFakeFileInfo());
+                    inputFile: this.GetFakeFileInfo(fileName));
         }
-        public ICFTInputFileInfo GetFakeFileInfo()
+
+        public ICFTInputFileInfo GetFakeFileInfo(string fileName = "XML_DATA_CONTENT.xml")
         {
             var fakeFileInfo = A.Fake<ICFTInputFileInfo>();
             A.CallTo(() => fakeFileInfo.FileContent)
                 .Returns(Encoding.Default.GetBytes(CONTENT_DATA_XML));
             A.CallTo(() => fakeFileInfo.FileName)
-                .Returns("XML_DATA_CONTENT.xml");
+                .Returns(fileName);
             return fakeFileInfo;
         }
 
