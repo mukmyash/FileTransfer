@@ -34,6 +34,10 @@ namespace CFT.MiddleWare.Transformations.FileName.ParametersExtracter
                         result = new FileNameParameterExtracter(
                             option as FileNameParameterDescriptionOption, result);
                         break;
+                    case ParameterType.CurrentDateTime:
+                        result = new CurrentDateTimeExtracter(
+                            option as CurrentDateTimeDescriptionOptions, result);
+                        break;
                     case ParameterType.XMLContent:
                         if (!includeXmlPrepareExtracter)
                         {

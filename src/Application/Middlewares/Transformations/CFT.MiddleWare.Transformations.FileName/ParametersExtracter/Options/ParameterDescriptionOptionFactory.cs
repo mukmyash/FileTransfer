@@ -25,6 +25,9 @@ namespace CFT.MiddleWare.Transformations.FileName.ParametersExtracter.Options
                     case ParameterType.XMLContent:
                         yield return new XmlContentParameterDescriptionOption(section);
                         break;
+                    case ParameterType.CurrentDateTime:
+                        yield return new CurrentDateTimeDescriptionOptions(section);
+                        break;
                     default:
                         throw new Exception("Данный тип параметра не поддерживается.");
                 }

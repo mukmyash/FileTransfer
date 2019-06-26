@@ -17,6 +17,11 @@ namespace CFT.MiddleWare.Transformations.FileName.ParametersExtracter.Options
         /// <summary>
         /// Имя файла
         /// </summary>
-        FileName
+        FileName,
+
+        /// <summary>
+        /// Текущая дата и время
+        /// </summary>
+        CurrentDateTime
     }
 }
