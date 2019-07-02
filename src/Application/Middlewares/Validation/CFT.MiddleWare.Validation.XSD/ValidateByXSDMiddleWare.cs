@@ -76,7 +76,7 @@ namespace CFT.MiddleWare.Validation.XSD
             }
 
             if (errors.Count > 0)
-                throw new XSDValidationException(errors);
+                throw new XSDValidationException(errors, _option.XSDPath);
 
             return Task.CompletedTask;
         }
